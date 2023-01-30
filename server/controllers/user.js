@@ -6,7 +6,7 @@ export const getUser = async (req, res, next) => {
     const { password, ...othersData } = user._doc;
     res.status(200).json({
       success: true,
-      othersData,
+      user: othersData,
     });
   } catch (error) {
     console.log(error);
@@ -28,9 +28,10 @@ export const updateUser = async (req, res, next) => {
       res.status(200).json({
         success: true,
         message: "User information updated successfully",
-        othersData,
+        user: othersData,
       });
     } catch (error) {
+      console.log(error);
       res
         .status(500)
         .json({ success: false, message: "Internal server error" });
@@ -52,8 +53,54 @@ export const followUser = async (req, res, next) => {
       await user.updateOne({ $push: { followers: req.body.id } });
 
       await currentUser.updateOne({ $push: { following: req.params.id } });
+
+      res.status(200).json({
+        success: true,
+        message: "Following the user",
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "You really follow the user",
+      });
     }
   } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const unfollowUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const currentUser = await User.findById(req.body.id);
+    if (user.followers.includes(req.body.id)) {
+      await user.updateOne({
+        $pull: {
+          followers: req.body.id,
+        },
+      });
+      await currentUser.updateOne({
+        $pull: {
+          following: req.params.id,
+        },
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Unfollowing the user",
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "You really unfollow the user",
+      });
+    }
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal server error",

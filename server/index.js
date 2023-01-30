@@ -6,6 +6,7 @@ import cors from "cors";
 
 import AuthRoutes from "./routes/auth.js";
 import UserRoutes from "./routes/user.js";
+import PostRoutes from "./routes/posts.js";
 
 const app = express();
 dotenv.config();
@@ -32,6 +33,7 @@ app.use(express.json());
 
 app.use("/api/auth", AuthRoutes);
 app.use("/api/user", UserRoutes);
+app.use("/api/posts", PostRoutes);
 
 app.listen(8000, () => {
   console.log("Listen to port 8000");

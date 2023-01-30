@@ -36,7 +36,7 @@ export const signup = async (req, res, next) => {
       .json({
         success: true,
         message: "User create successfully",
-        othersData,
+        user: othersData,
       });
   } catch (error) {
     console.log(error);
@@ -83,7 +83,7 @@ export const signin = async (req, res, next) => {
       .json({
         success: true,
         message: "User logged in successfully",
-        othersData,
+        user: othersData,
       });
   } catch (error) {
     console.log(error);
