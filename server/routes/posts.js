@@ -22,7 +22,7 @@ router.put("/:id", verifyToken, deletePost);
 // Like or dislike post
 router.put("/:id/like", verifyToken, likeOrDislike);
 
-// Get all timeline tweet
+// Get all timeline posts
 router.get("/timeline/:id", verifyToken, getAllPosts);
 
 // Get user posts only
