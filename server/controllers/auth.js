@@ -55,8 +55,9 @@ export const signin = async (req, res, next) => {
       message: "Missing username and/or password",
     });
   try {
-    const user = await User.findOne({ username });
-
+    const user = await User.findOne({ username })
+      .populate("followers", ["-password"])
+      .populate("following", ["-password"]);
     if (!user)
       return res
         .status(400)

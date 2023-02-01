@@ -1,6 +1,5 @@
 import User from "../models/User.js";
 import Post from "../models/Post.js";
-import { json } from "express";
 
 export const createPost = async (req, res, next) => {
   const newPost = new Post(req.body);
@@ -74,10 +73,22 @@ export const likeOrDislike = async (req, res, next) => {
 export const getAllPosts = async (req, res, next) => {
   try {
     const currentUser = await User.findById(req.params.id);
-    const userPosts = await Post.find({ userId: currentUser._id });
+    const userPosts = await Post.find({ userId: currentUser._id })
+      .populate("userId", ["-password"])
+      .populate("likes", ["-password"])
+      .populate({
+        path: "comments",
+        populate: { path: "userId", select: "-passowrd" },
+      });
     const followersPosts = await Promise.all(
       currentUser.following.map((followerId) => {
-        return Post.find({ userId: followerId });
+        return Post.find({ userId: followerId })
+          .populate("userId", ["-password"])
+          .populate("likes", ["-password"])
+          .populate({
+            path: "comments",
+            populate: { path: "userId", select: "-password" },
+          });
       })
     );
 

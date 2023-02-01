@@ -2,7 +2,9 @@ import User from "../models/User.js";
 
 export const getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id)
+      .populate("followers", ["-password"])
+      .populate("following", ["-password"]);
     const { password, ...othersData } = user._doc;
     res.status(200).json({
       success: true,
@@ -23,7 +25,9 @@ export const updateUser = async (req, res, next) => {
           $set: req.body,
         },
         { new: true }
-      );
+      )
+        .populate("followers", ["-password"])
+        .populate("following", ["-password"]);
       const { password, ...othersData } = updateUser._doc;
       res.status(200).json({
         success: true,
