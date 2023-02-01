@@ -107,9 +107,16 @@ export const getAllPosts = async (req, res, next) => {
 
 export const getUserPosts = async (req, res, next) => {
   try {
-    const userPosts = await Post.find({ userId: req.params.id }).sort({
-      createAt: -1,
-    });
+    const userPosts = await Post.find({ userId: req.params.id })
+      .populate("userId", ["-password"])
+      .populate("likes", ["-password"])
+      .populate({
+        path: "comments",
+        populate: { path: "userId", select: "-password" },
+      })
+      .sort({
+        createAt: -1,
+      });
     res.status(200).json({
       success: true,
       posts: userPosts,
@@ -126,7 +133,14 @@ export const getExplorePosts = async (req, res, next) => {
   try {
     const getExplorePosts = await Post.find({
       likes: { $exists: true },
-    }).sort({ likes: -1 });
+    })
+      .populate("userId", ["-password"])
+      .populate("likes", ["-password"])
+      .populate({
+        path: "comments",
+        populate: { path: "userId", select: "-password" },
+      })
+      .sort({ likes: -1 });
     res.status(200).json({
       success: true,
       posts: getExplorePosts,
