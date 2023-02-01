@@ -26,7 +26,8 @@ const Login = () => {
         username,
         password,
       });
-      navigate("/");
+      console.log(res.data);
+      if (res.data.success) navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +51,7 @@ const Login = () => {
                         </span> */}
                       <input
                         onChange={(e) => setUsername(e.target.value)}
+                        autoCapitalize="on"
                         type="text"
                         placeholder="Tên người dùng"
                         className="py-3 pl-2 w-full bg-secondaryBg outline-none text-primaryText text-xs placeholder:text-xs placeholder:text-secondaryText"
@@ -63,6 +65,7 @@ const Login = () => {
                         </span> */}
                       <input
                         onChange={(e) => setPassword(e.target.value)}
+                        autoCapitalize="on"
                         type="password"
                         placeholder="Mật khẩu"
                         className="py-3 pl-2 w-full bg-secondaryBg outline-none text-primaryText text-xs placeholder:text-xs placeholder:text-secondaryText"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   InstagramText,
@@ -7,6 +7,7 @@ import {
 } from "../../assets/icons";
 
 const Header = () => {
+  const [valueInput, setValueInput] = useState("");
   return (
     <header className="flex md:hidden fixed top-0 left-0 w-full h-[60px] bg-primaryBg before:absolute before:w-full before:h-[1px] before:-bottom-[1px] before:left-0 before:right-0 before:bg-separator">
       <div className="w-full px-4 flex items-center justify-between">
@@ -16,8 +17,9 @@ const Header = () => {
         <div className="flex items-center">
           <div className="px-4 relative">
             <input
+              onChange={(e) => setValueInput(e.target.value)}
               className="bg-highlightBg rounded-lg outline-none text-primaryText font-extralight py-[6px] pl-12 pr-5"
-              autocapitalize="none"
+              autoCapitalize="on"
               placeholder="Tìm kiếm"
               type="text"
               value=""
