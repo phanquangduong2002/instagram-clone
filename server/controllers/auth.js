@@ -58,18 +58,16 @@ export const signin = async (req, res, next) => {
     const user = await User.findOne({ username });
 
     if (!user)
-      return res.status(400).json({
-        success: false,
-        message: "Incorrect username or password",
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Incorrect username or password" });
 
     const isCorrect = await argon2.verify(user.password, req.body.password);
 
     if (!isCorrect)
-      return res.status(400).json({
-        success: false,
-        message: "Incorrect username or password",
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Incorrect username or password" });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT);
 

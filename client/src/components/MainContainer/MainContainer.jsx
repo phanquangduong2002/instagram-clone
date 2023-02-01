@@ -1,5 +1,5 @@
 import React from "react";
-import MainPosts from "../MainPosts/MainPosts";
+import TimelinePost from "../TimelinePost/TimelinePost";
 import TimelineStory from "../TimelineStory/TimelineStory";
 
 const MainContainer = () => {
@@ -11,7 +11,7 @@ const MainContainer = () => {
             <TimelineStory />
           </div>
           <div className="mt-4">
-            <MainPosts />
+            <TimelinePost />
           </div>
         </div>
         <div>Sidebar</div>

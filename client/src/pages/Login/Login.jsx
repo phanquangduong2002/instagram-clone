@@ -4,6 +4,9 @@ import axios from "axios";
 
 import { apiUrl } from "../../api/constants";
 
+import { useDispatch } from "react-redux";
+import { loginStart, loginSuccess, loginFailed } from "../../redux/userSlice";
+
 import {
   InstagramTextLogin,
   FacebookLogo,
@@ -17,19 +20,24 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    dispatch(loginStart());
     try {
-      const res = await axios.post(`${apiUrl}/auth/signin`, {
+      const response = await axios.post(`${apiUrl}/auth/signin`, {
         username,
         password,
       });
-      console.log(res.data);
-      if (res.data.success) navigate("/");
+      console.log(response.data);
+      if (response.data.success) {
+        dispatch(loginSuccess(response.data.user));
+        navigate("/");
+      }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      dispatch(loginFailed());
     }
   };
 
@@ -75,7 +83,7 @@ const Login = () => {
                   <div className="my-2 mx-10">
                     <button
                       onClick={handleLogin}
-                      className="w-full py-[6px] px-4 bg-primaryButton rounded-lg text-white text-sm font-medium"
+                      className="w-full py-[6px] px-4 bg-primaryButton hover:bg-primaryButtonHover transition-all duration-100 ease-in-out rounded-lg text-white text-sm font-medium"
                     >
                       Đăng nhập
                     </button>

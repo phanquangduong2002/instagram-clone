@@ -20,22 +20,22 @@ router.post("/", verifyToken, createPost);
 router.put("/:id", verifyToken, deletePost);
 
 // Like or dislike post
-router.put("/:id/like", verifyToken, likeOrDislike);
+router.put("/:id/like", likeOrDislike);
 
 // Get all timeline posts
-router.get("/timeline/:id", verifyToken, getAllPosts);
+router.get("/timeline/:id", getAllPosts);
 
 // Get user posts only
-router.get("/user/:id", verifyToken, getUserPosts);
+router.get("/user/:id", getUserPosts);
 
 // Explore
 router.get("/explore", getExplorePosts);
 
 // Create Comment
-router.post("/comment/:id", verifyToken, CreateComment);
+router.post("/comment/:id", CreateComment);
 
 // Delete comment
 
-router.put("/comment/:id/delete", verifyToken, DeleteComment);
+router.put("/comment/:id/delete", DeleteComment);
 
 export default router;
