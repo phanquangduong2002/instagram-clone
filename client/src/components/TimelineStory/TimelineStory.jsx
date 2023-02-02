@@ -5,17 +5,52 @@ import { useSelector } from "react-redux";
 
 import { apiUrl } from "../../api/constants";
 
+import AvatarImage from "../../assets/images/avatar.jpg";
+import TtImage from "../../assets/images/tt.jpg";
+
 const TimelineStory = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-      } catch (error) {}
-    };
-  });
-
-  return <div>TimelineStory</div>;
+  return (
+    <div className="flex items-center gap-x-[2px]">
+      <div key={currentUser._id} className="flex w-20">
+        <button
+          onClick={(e) => e.preventDefault()}
+          className="flex flex-col w-full justify-center items-center"
+        >
+          <span className="w-16 h-16 mt-1 mb-2 p-[2px] rounded-full border-[1px] border-separator overflow-hidden">
+            <img
+              src={AvatarImage}
+              className="w-full h-full rounded-full object-cover object-center"
+              alt=""
+            />
+          </span>
+          <span className="w-full px-[2px] text-xs text-secondaryText font-normal truncate">
+            quangduongg_
+          </span>
+        </button>
+      </div>
+      {currentUser.following.map((followerUser) => (
+        <div key={followerUser._id} className="flex w-20">
+          <button
+            onClick={(e) => e.preventDefault()}
+            className="flex flex-col w-full justify-center items-center"
+          >
+            <span className="w-16 h-16 mt-1 mb-2 p-[2px] rounded-full border-[1px] border-separator overflow-hidden">
+              <img
+                src={TtImage}
+                className="w-full h-full rounded-full object-cover object-center"
+                alt=""
+              />
+            </span>
+            <span className="w-full px-[2px] text-xs text-secondaryText font-normal truncate">
+              {followerUser.username}
+            </span>
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default TimelineStory;

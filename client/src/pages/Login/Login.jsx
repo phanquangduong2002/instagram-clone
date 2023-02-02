@@ -30,7 +30,6 @@ const Login = () => {
         username,
         password,
       });
-      console.log(response.data);
       if (response.data.success) {
         dispatch(loginSuccess(response.data.user));
         navigate("/");

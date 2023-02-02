@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", verifyToken, createPost);
 
 // Delete post
-router.put("/:id", verifyToken, deletePost);
+router.delete("/:id", verifyToken, deletePost);
 
 // Like or dislike post
 router.put("/:id/like", likeOrDislike);
@@ -36,6 +36,6 @@ router.post("/comment/:id", CreateComment);
 
 // Delete comment
 
-router.put("/comment/:id/delete", DeleteComment);
+router.delete("/comment/:id/delete", DeleteComment);
 
 export default router;
