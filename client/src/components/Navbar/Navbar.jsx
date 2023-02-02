@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { motion } from "framer-motion";
 
@@ -21,6 +22,8 @@ import {
 
 const Navbar = () => {
   const [openSetting, setOpenSetting] = useState(false);
+
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleSetting = () => {
     setOpenSetting(!openSetting);
@@ -152,7 +155,7 @@ const Navbar = () => {
                 </span>
               </motion.div>
             </button>
-            <Link to="/profile/:username">
+            <Link to={`/profile/${currentUser.username}`}>
               <motion.div
                 whileTap={{ opacity: 0.4 }}
                 transition={{ duration: 0.1 }}

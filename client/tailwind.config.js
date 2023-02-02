@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         primaryBg: "rgb(255,255,255)",
         highlightBg: "rgb(239,239,239)",
+        secondaryButton: "rgb(239,239,239)",
         secondaryBg: "rgb(250,250,250)",
         separator: "rgb(219,219,219)",
         focusSeparator: "rgb(148,148,148)",

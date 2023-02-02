@@ -26,7 +26,7 @@ const TimelineStory = () => {
             />
           </span>
           <span className="w-full px-[2px] text-xs text-secondaryText font-normal truncate">
-            quangduongg_
+            {currentUser.username}
           </span>
         </button>
       </div>
