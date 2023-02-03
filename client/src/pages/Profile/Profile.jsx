@@ -5,6 +5,10 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../api/constants";
 
+import UserPosts from "../../components/UserPosts/UserPosts";
+import SavedPosts from "../../components/SavedPosts.jsx/SavedPosts";
+import TaggedPosts from "../../components/TaggedPosts/TaggedPosts";
+
 import AvatarImage from "../../assets/images/avatar.jpg";
 import {
   OptionProfileIcon,
@@ -19,6 +23,7 @@ import {
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
 
+  const [user, setUser] = useState(null);
   const [posts, setPosts] = useState(null);
 
   const location = useLocation().pathname;
@@ -27,12 +32,23 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const posts = await axios.get(`${apiUrl}/posts/user/${currentUser._id}`);
-      if (posts.data.success) setPosts(posts.data.posts);
+      try {
+        const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
+
+        const postsData = await axios.get(
+          `${apiUrl}/posts/user/${userProfile.data.user._id}`
+        );
+
+        if (userProfile.data.success) setUser(userProfile.data.user);
+
+        if (postsData.data.success) setPosts(postsData.data.posts);
+      } catch (error) {
+        console.log(error.response.data);
+      }
     };
 
     fetchData();
-  }, [currentUser._id]);
+  }, [currentUser, username]);
 
   return (
     <div className="ml-0 md:ml-[72px] xl:ml-[244px] bg-secondaryBg">
@@ -44,12 +60,10 @@ const Profile = () => {
                 <button className="w-full h-full">
                   <img
                     src={
-                      currentUser.profilePicture
-                        ? currentUser.profilePicture
-                        : AvatarImage
+                      user?.profilePicture ? user.profilePicture : AvatarImage
                     }
                     className="w-full h-full rounded-full"
-                    alt={`Avatar ${currentUser.username}`}
+                    alt={`Avatar ${user?.username}`}
                   />
                 </button>
               </div>
@@ -57,10 +71,10 @@ const Profile = () => {
 
             <div className="flex flex-col flex-1">
               <div className="flex items-center">
-                <h2 className="text-lg font-normal">{currentUser.username}</h2>
+                <h2 className="text-lg font-normal">{user?.username}</h2>
                 <div className="ml-5">
                   <Link
-                    to={`/profile/${currentUser.username}/edit`}
+                    to={`/profile/${user?.username}/edit`}
                     className="py-2 px-4 bg-secondaryButton rounded-lg text-sm font-medium"
                   >
                     Chỉnh sửa trang cá nhân
@@ -82,28 +96,32 @@ const Profile = () => {
                 </p>
                 <button className="mr-10 font-normal">
                   <span className="mr-[6px] font-medium">
-                    {currentUser.followers.length}
+                    {user?.followers.length}
                   </span>
                   người theo dõi
                 </button>
                 <button className="font-normal">
                   Đang theo giõi
                   <span className="mx-[6px] font-medium">
-                    {currentUser.following.length}
+                    {user?.following.length}
                   </span>
                   người dùng
                 </button>
               </div>
               <div>
-                <p className="text-sm font-medium">{currentUser.fullname}</p>
+                <p className="text-sm font-medium">{user?.fullname}</p>
               </div>
             </div>
           </header>
 
           <div className="border-t-[1px] border-separator flex items-center justify-center">
             <Link
-              to={`/profile/${currentUser.username}`}
-              className="py-5 mr-[60px] -mt-[1px] border-t-[1px] border-black"
+              to={`/profile/${user?.username}`}
+              className={`py-5 mr-[60px] -mt-[1px] border-t-[1px] ${
+                !(location.includes("saved") || location.includes("tagged"))
+                  ? "border-black"
+                  : "border-separator"
+              }`}
             >
               <div className="flex items-center">
                 <span>
@@ -126,32 +144,42 @@ const Profile = () => {
                 </span>
               </div>
             </Link>
+            {username === currentUser.username && (
+              <Link
+                to={`/profile/${user?.username}/saved`}
+                className={`py-5 mr-[60px] -mt-[1px] border-t-[1px] ${
+                  location.includes("saved")
+                    ? "border-black"
+                    : "border-separator"
+                }`}
+              >
+                <div className="flex items-center">
+                  <span>
+                    {location.includes("saved") ? (
+                      <SavedActiveIcon />
+                    ) : (
+                      <SavedIcon />
+                    )}
+                  </span>
+                  <span
+                    className={`uppercase ml-[6px] text-xs font-medium tracking-wide ${
+                      location.includes("saved")
+                        ? "text-primaryText"
+                        : "text-secondaryText"
+                    }`}
+                  >
+                    Đã lưu
+                  </span>
+                </div>
+              </Link>
+            )}
             <Link
-              to={`/profile/${currentUser.username}/saved`}
-              className="py-5 mr-[60px] -mt-[1px]"
-            >
-              <div className="flex items-center">
-                <span>
-                  {location.includes("saved") ? (
-                    <SavedActiveIcon />
-                  ) : (
-                    <SavedIcon />
-                  )}
-                </span>
-                <span
-                  className={`uppercase ml-[6px] text-xs font-medium tracking-wide ${
-                    location.includes("saved")
-                      ? "text-primaryText"
-                      : "text-secondaryText"
-                  }`}
-                >
-                  Đã lưu
-                </span>
-              </div>
-            </Link>
-            <Link
-              to={`/profile/${currentUser.username}/tagged`}
-              className="py-5 mr-[60px] -mt-[1px]"
+              to={`/profile/${user?.username}/tagged`}
+              className={`py-5 mr-[60px] -mt-[1px] border-t-[1px] ${
+                location.includes("tagged")
+                  ? "border-black"
+                  : "border-separator"
+              }`}
             >
               <div className="flex items-center">
                 <span>
@@ -174,7 +202,15 @@ const Profile = () => {
             </Link>
           </div>
 
-          <div>Posts</div>
+          <div className="flex items-center justify-center">
+            {location.includes("saved") ? (
+              <SavedPosts />
+            ) : location.includes("tagged") ? (
+              <TaggedPosts />
+            ) : (
+              <UserPosts />
+            )}
+          </div>
         </div>
       </main>
     </div>

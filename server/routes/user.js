@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getUser,
+  findUser,
   updateUser,
   followUser,
   unfollowUser,
@@ -9,8 +10,12 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// Get User
+// Get User by id
 router.get("/find/:id", getUser);
+
+// Get user by username
+
+router.get("/get/:username", findUser);
 
 // Update User
 router.put("/update/:id", verifyToken, updateUser);

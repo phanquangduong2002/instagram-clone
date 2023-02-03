@@ -15,6 +15,21 @@ export const getUser = async (req, res, next) => {
     res.json(500).json({ success: false, message: "Internal server error" });
   }
 };
+export const findUser = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.params.username })
+      .populate("followers", ["-password"])
+      .populate("following", ["-password"]);
+    const { password, ...othersData } = user._doc;
+    res.status(200).json({
+      success: true,
+      user: othersData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 export const updateUser = async (req, res, next) => {
   if (req.params.id === req.user.userId) {

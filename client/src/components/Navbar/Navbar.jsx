@@ -165,7 +165,7 @@ const Navbar = () => {
                   <img
                     src={AvatarImage}
                     className={`w-[26px] h-[26px] rounded-full border-[2px] ${
-                      location.includes("profile")
+                      location.includes(`profile/${currentUser.username}`)
                         ? "border-primaryText"
                         : "border-primaryBg"
                     }`}
@@ -174,7 +174,7 @@ const Navbar = () => {
                 </span>
                 <span
                   className={`hidden xl:flex pl-5 text-primaryText ${
-                    location.includes("profile")
+                    location.includes(`profile/${currentUser.username}`)
                       ? "font-semibold"
                       : "font-normal"
                   }`}
