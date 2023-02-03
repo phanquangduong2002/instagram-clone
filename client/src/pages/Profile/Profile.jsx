@@ -6,10 +6,6 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import axios from "axios";
 import { apiUrl } from "../../api/constants";
 
-import UserPosts from "../../components/UserPosts/UserPosts";
-import SavedPosts from "../../components/SavedPosts.jsx/SavedPosts";
-import TaggedPosts from "../../components/TaggedPosts/TaggedPosts";
-
 import AvatarImage from "../../assets/images/avatar.jpg";
 import {
   OptionProfileIcon,
@@ -21,6 +17,7 @@ import {
   TaggedActiveIcon,
   ArrowIcon,
 } from "../../assets/icons";
+import PostStorage from "../../components/PostStorage/PostStorage";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -45,9 +42,9 @@ const Profile = () => {
 
         if (userProfile.data.success) {
           setUser(userProfile.data.user);
-          setTitle(
-            `${userProfile.data.user.fullname} @(${userProfile.data.user.username})`
-          );
+          // setTitle(
+          //   `${userProfile.data.user.fullname} @(${userProfile.data.user.username})`
+          // );
         }
 
         if (postsData.data.success) setPosts(postsData.data.posts);
@@ -219,13 +216,20 @@ const Profile = () => {
               </Link>
             </div>
 
-            <div className="flex items-center justify-center">
+            <div className="flex items-center">
               {location.includes("saved") ? (
-                <SavedPosts />
+                <div>SavedPosts</div>
               ) : location.includes("tagged") ? (
-                <TaggedPosts />
+                <div>TaggedPosts</div>
               ) : (
-                <UserPosts />
+                <div className="w-full flex flex-wrap justify-center gap-7">
+                  {posts &&
+                    posts.map((post) => (
+                      <button key={post._id}>
+                        <PostStorage post={post} />
+                      </button>
+                    ))}
+                </div>
               )}
             </div>
           </div>
