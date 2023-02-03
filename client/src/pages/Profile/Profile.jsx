@@ -42,9 +42,9 @@ const Profile = () => {
 
         if (userProfile.data.success) {
           setUser(userProfile.data.user);
-          // setTitle(
-          //   `${userProfile.data.user.fullname} @(${userProfile.data.user.username})`
-          // );
+          setTitle(
+            `${userProfile.data.user.fullname} @(${userProfile.data.user.username})`
+          );
         }
 
         if (postsData.data.success) setPosts(postsData.data.posts);
