@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -18,6 +18,8 @@ import MicrosoftLogo from "../../assets/images/Microsoft-Logo.png";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [title, setTitle] = useState("Đăng nhập • Instagram");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,6 +41,10 @@ const Login = () => {
       dispatch(loginFailed());
     }
   };
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
   return (
     <div className="w-full bg-secondaryBg">

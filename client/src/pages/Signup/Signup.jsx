@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -19,6 +19,8 @@ const Signup = () => {
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [title, setTitle] = useState("Đăng ký • Instagram");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,6 +43,10 @@ const Signup = () => {
       dispatch(loginFailed());
     }
   };
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
   return (
     <div className="w-full bg-secondaryBg">

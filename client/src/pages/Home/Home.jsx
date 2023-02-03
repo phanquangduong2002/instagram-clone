@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 import Header from "../../components/Header/Header";
@@ -8,6 +8,12 @@ import { useSelector } from "react-redux";
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
+
+  const [title, setTitle] = useState("Instagram");
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
   if (!currentUser) return <Navigate to="/accounts/login" />;
 
