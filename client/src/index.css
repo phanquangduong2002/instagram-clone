@@ -14,14 +14,13 @@ html,
 body {
   @apply scroll-smooth;
   -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
 }
 
 /* Scroll bar */
 
 html *::-webkit-scrollbar {
   border-radius: 0;
-  width: 6px;
+  width: 0px;
 }
 
 html *::-webkit-scrollbar-thumb {

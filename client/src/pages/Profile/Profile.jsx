@@ -17,7 +17,8 @@ import {
   TaggedActiveIcon,
   ArrowIcon,
 } from "../../assets/icons";
-import PostStorage from "../../components/PostStorage/PostStorage";
+
+import UserPosts from "../../components/UserPosts/UserPosts";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -43,7 +44,7 @@ const Profile = () => {
         if (userProfile.data.success) {
           setUser(userProfile.data.user);
           setTitle(
-            `${userProfile.data.user.fullname} @(${userProfile.data.user.username})`
+            `${userProfile.data.user.fullname} (@${userProfile.data.user.username})`
           );
         }
 
@@ -223,12 +224,7 @@ const Profile = () => {
                 <div>TaggedPosts</div>
               ) : (
                 <div className="w-full flex flex-wrap justify-center gap-7">
-                  {posts &&
-                    posts.map((post) => (
-                      <button key={post._id}>
-                        <PostStorage post={post} />
-                      </button>
-                    ))}
+                  <UserPosts posts={posts} setPosts={setPosts} />
                 </div>
               )}
             </div>

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDistance } from "date-fns";
-import { useSelector } from "react-redux";
+
+import { useSelector, useDispatch } from "react-redux";
+import { findPost } from "../../redux/postSlice";
+
 import { motion } from "framer-motion";
 
 import axios from "axios";
@@ -17,9 +20,10 @@ import {
   SaveIcon,
 } from "../../assets/icons";
 
-const Post = ({ post, setData }) => {
+const Post = ({ post, setData, setIsShowPostModal }) => {
   const { currentUser } = useSelector((state) => state.user);
-  console.log("post: ", post);
+
+  const dispatch = useDispatch();
 
   const isLike = () => {
     const isLikePost = post.likes.some((like) => like._id === currentUser._id);
@@ -33,14 +37,19 @@ const Post = ({ post, setData }) => {
         id: currentUser._id,
       });
 
-      const newData = await axios.get(
+      const postsData = await axios.get(
         `${apiUrl}/posts/timeline/${currentUser._id}`
       );
 
-      if (newData.data.success) setData(newData.data.posts);
+      if (postsData.data.success) setData(postsData.data.posts);
     } catch (error) {
       console.log(error.response.data);
     }
+  };
+
+  const handlePostModal = () => {
+    setIsShowPostModal(true);
+    dispatch(findPost(post));
   };
 
   const dateStr = formatDistance(new Date(post.createdAt), new Date());
@@ -108,7 +117,7 @@ const Post = ({ post, setData }) => {
             )}
           </span>
           <span className="hover:opacity-[0.6]">
-            <button className="p-2">
+            <button onClick={handlePostModal} className="p-2">
               <CommentIcon />
             </button>
           </span>
@@ -134,7 +143,11 @@ const Post = ({ post, setData }) => {
               </Link>
               {post.likes.length >= 2 ? (
                 <p className="ml-1 text-xs font-normal text-primaryText">
-                  và những người khác đã thích
+                  và{" "}
+                  <span className="text-xs font-semibold text-primaryText">
+                    {post.likes.length - 1}
+                  </span>{" "}
+                  người khác đã thích
                 </p>
               ) : (
                 <p className="ml-1 text-xs font-normal text-primaryText">
@@ -157,7 +170,7 @@ const Post = ({ post, setData }) => {
             </p>
           </div>
           <div className="mb-2 text-sm text-secondaryText font-normal">
-            <button>
+            <button onClick={handlePostModal}>
               Xem tất cả
               <span className="mx-[2px]">{post.comments.length}</span>
               bình luận
