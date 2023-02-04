@@ -302,7 +302,10 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
               <form action="">
                 <div className="flex items-center">
                   <div className="">
-                    <button className="py-2 px-4">
+                    <button
+                      onClick={(e) => e.preventDefault()}
+                      className="py-2 px-4"
+                    >
                       <EmojiIcon />
                     </button>
                   </div>
