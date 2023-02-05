@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import { AnimatePresence } from "framer-motion";
@@ -44,6 +44,8 @@ const Profile = () => {
 
   const { username } = useParams();
 
+  const navigate = useNavigate();
+
   isShowUserInteractionModal
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "visible");
@@ -69,7 +71,7 @@ const Profile = () => {
       const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
       setUser(userProfile.data.user);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response?.data);
     }
   };
 
@@ -91,7 +93,7 @@ const Profile = () => {
 
         if (postsData.data.success) setPosts(postsData.data.posts);
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error.response?.data);
       }
     };
 
@@ -331,7 +333,7 @@ const Profile = () => {
               ) : location.includes("tagged") ? (
                 <TaggedPosts user={user} />
               ) : (
-                <UserPosts posts={posts} setPosts={setPosts} />
+                <UserPosts user={user} posts={posts} setPosts={setPosts} />
               )}
             </div>
           </div>

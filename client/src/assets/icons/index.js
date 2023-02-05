@@ -1006,8 +1006,8 @@ export const StarCircleIcon = () => {
       fill="#000000"
       version="1.1"
       id="Layer_1"
-      width="24"
-      height="24"
+      width="22"
+      height="22"
       viewBox="0 0 512 512"
       enableBackground="new 0 0 512 512"
     >
@@ -1019,7 +1019,7 @@ export const StarCircleIcon = () => {
 
 export const StarIcon = () => {
   return (
-    <svg width="24" height="24" viewBox="0 -1 34 34" version="1.1">
+    <svg width="22" height="22" viewBox="0 -1 34 34" version="1.1">
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g
           transform="translate(-343.000000, -284.000000)"

@@ -16,7 +16,7 @@ const TaggedPosts = ({ user }) => {
         </div>
         {/* 2 */}
         <div className="my-6">
-          {user._id === currentUser._id ? (
+          {user?._id === currentUser?._id ? (
             <h2 className="text-3xl font-extrabold text-primaryText text-center">
               Ảnh có mặt bạn
             </h2>
@@ -27,7 +27,7 @@ const TaggedPosts = ({ user }) => {
           )}
         </div>
         {/* 3 */}
-        {user._id === currentUser._id && (
+        {user?._id === currentUser?._id && (
           <div className="mb-6">
             <p className="text-primaryText text-sm font-normal text-center">
               Khi mọi người gắn thẻ bạn trong ảnh, ảnh sẽ xuất hiện tại đây.

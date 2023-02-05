@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
 
 import PostModal from "../PostModal/PostModal";
 import PostStorage from "../PostStorage/PostStorage";
 
 import { CameraIcon } from "../../assets/icons";
 
-const UserPosts = ({ posts, setPosts }) => {
+const UserPosts = ({ user, posts, setPosts }) => {
+  const { currentUser } = useSelector((state) => state.user);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
 
   isShowPostModal
@@ -31,22 +33,33 @@ const UserPosts = ({ posts, setPosts }) => {
           </div>
           {/* 2 */}
           <div className="my-6">
-            <h2 className="text-3xl font-extrabold text-primaryText text-center">
-              Chia sẻ ảnh
-            </h2>
+            {user?._id === currentUser?._id ? (
+              <h2 className="text-3xl font-extrabold text-primaryText text-center">
+                Chia sẻ ảnh
+              </h2>
+            ) : (
+              <h2 className="text-3xl font-extrabold text-primaryText text-center">
+                Chưa có bài viết
+              </h2>
+            )}
           </div>
-          {/* 3 */}
-          <div className="mb-6">
-            <p className="text-primaryText text-sm font-normal text-center">
-              Khi bạn chia sẻ ảnh, ảnh sẽ xuất hiện trên trang cá nhân của bạn.
-            </p>
-          </div>
-          {/* 4 */}
-          <div className="flex items-center justify-center">
-            <button className="text-primaryButton hover:text-linkText text-sm font-medium text-center">
-              Chia sẻ ảnh đầu tiên của bạn
-            </button>
-          </div>
+          {user?._id === currentUser?._id && (
+            <>
+              {/* 3 */}
+              <div className="mb-6">
+                <p className="text-primaryText text-sm font-normal text-center">
+                  Khi bạn chia sẻ ảnh, ảnh sẽ xuất hiện trên trang cá nhân của
+                  bạn.
+                </p>
+              </div>
+              {/* 4 */}
+              <div className="flex items-center justify-center">
+                <button className="text-primaryButton hover:text-linkText text-sm font-medium text-center">
+                  Chia sẻ ảnh đầu tiên của bạn
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
       <AnimatePresence>

@@ -5,6 +5,12 @@ export const getUser = async (req, res, next) => {
     const user = await User.findById(req.params.id)
       .populate("followers", ["-password"])
       .populate("following", ["-password"]);
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
+
     const { password, ...othersData } = user._doc;
     res.status(200).json({
       success: true,
@@ -20,6 +26,12 @@ export const findUser = async (req, res, next) => {
     const user = await User.findOne({ username: req.params.username })
       .populate("followers", ["-password"])
       .populate("following", ["-password"]);
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
+
     const { password, ...othersData } = user._doc;
     res.status(200).json({
       success: true,
