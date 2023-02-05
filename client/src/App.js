@@ -5,6 +5,7 @@ import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Error from "./pages/Error/Error";
+import Edit from "./pages/Edit/Edit";
 
 import Navbar from "./components/Navbar/Navbar";
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/:username/tagged",
         element: <Profile />,
+      },
+      {
+        path: "/accounts/edit",
+        element: <Edit />,
       },
     ],
   },

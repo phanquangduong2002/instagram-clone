@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
+import { AnimatePresence } from "framer-motion";
+
 import axios from "axios";
 import { apiUrl } from "../../api/constants";
 
@@ -16,9 +18,16 @@ import {
   TaggedIcon,
   TaggedActiveIcon,
   ArrowIcon,
+  BlackArrowIcon,
+  AddUserIcon,
+  LargeOptionIcon,
 } from "../../assets/icons";
 
 import UserPosts from "../../components/UserPosts/UserPosts";
+import TaggedPosts from "../../components/TaggedPosts/TaggedPosts";
+import SavedPosts from "../../components/SavedPosts/SavedPosts";
+
+import UserInteractionModal from "../../components/UserInteractionModal/UserInteractionModal";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -28,9 +37,22 @@ const Profile = () => {
 
   const [title, setTitle] = useState("Instagram");
 
+  const [isShowUserInteractionModal, setIsShowUserInteractionModal] =
+    useState(false);
+
   const location = useLocation().pathname;
 
   const { username } = useParams();
+
+  isShowUserInteractionModal
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "visible");
+
+  const isFollowing = () => {
+    const isFollowing =
+      user && user.following.some((user) => user._id === currentUser._id);
+    return isFollowing;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +65,7 @@ const Profile = () => {
 
         if (userProfile.data.success) {
           setUser(userProfile.data.user);
+          console.log(userProfile.data.user);
           setTitle(
             `${userProfile.data.user.fullname} (@${userProfile.data.user.username})`
           );
@@ -63,9 +86,9 @@ const Profile = () => {
         <title>{title}</title>
       </Helmet>
 
-      <div className="ml-0 md:ml-[72px] xl:ml-[244px] bg-secondaryBg">
-        <main>
-          <div className="pt-[30px] px-5 mx-5 w-full">
+      <div className="min-h-screen ml-0 md:ml-[72px] xl:ml-[244px] bg-secondaryBg flex flex-col">
+        <main className="flex-1">
+          <div className="pt-[30px] px-5 mx-5">
             <header className="mb-10 flex">
               <div className="mr-[30px]">
                 <div className="mx-16 w-[150px] h-[150px]">
@@ -84,17 +107,76 @@ const Profile = () => {
               <div className="flex flex-col flex-1">
                 <div className="flex items-center">
                   <h2 className="text-lg font-normal">{user?.username}</h2>
-                  <div className="ml-5">
-                    <Link
-                      to={`/profile/${user?.username}/edit`}
-                      className="py-2 px-4 bg-secondaryButton rounded-lg text-sm font-medium"
-                    >
-                      Chỉnh sửa trang cá nhân
-                    </Link>
-                  </div>
+                  {username === currentUser.username ? (
+                    <>
+                      <div className="ml-5">
+                        <Link
+                          to={`/accounts/edit`}
+                          className="py-2 px-4 bg-secondaryButton rounded-lg text-sm font-medium"
+                        >
+                          Chỉnh sửa trang cá nhân
+                        </Link>
+                      </div>
+                      <div className="ml-[5px]">
+                        <button className="p-2">
+                          <OptionProfileIcon />
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="ml-5 flex items-center justify-center">
+                        <div className="ml-2">
+                          {isFollowing() ? (
+                            <button
+                              onClick={() =>
+                                setIsShowUserInteractionModal(true)
+                              }
+                              className="py-[7px] px-4 rounded-lg flex items-center bg-secondaryButton hover:bg-secondaryButtonHover
+                            "
+                            >
+                              <span className="text-[13px] font-semibold text-primaryText">
+                                Đang theo giõi
+                              </span>
+                              <span className="ml-[6px] rotate-180">
+                                <BlackArrowIcon />
+                              </span>
+                            </button>
+                          ) : (
+                            <button
+                              className="py-[7px] px-4 rounded-lg flex items-center bg-primaryButton hover:bg-primaryButtonHover
+                            "
+                            >
+                              <span className="text-[13px] font-semibold text-white">
+                                Theo giõi
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                        <div className="ml-2">
+                          <button
+                            className="py-[7px] px-4 rounded-lg flex items-center bg-secondaryButton hover:bg-secondaryButtonHover
+                            "
+                          >
+                            <span className="text-[13px] font-semibold text-primaryText">
+                              Nhắn tin
+                            </span>
+                          </button>
+                        </div>
+                        <div className="ml-2">
+                          <button
+                            className="py-[7px] px-[10px] rounded-lg flex items-center bg-secondaryButton hover:bg-secondaryButtonHover
+                            "
+                          >
+                            <AddUserIcon />
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                   <div className="ml-[5px]">
                     <button className="p-2">
-                      <OptionProfileIcon />
+                      <LargeOptionIcon />
                     </button>
                   </div>
                 </div>
@@ -120,8 +202,15 @@ const Profile = () => {
                     người dùng
                   </button>
                 </div>
+                <div className="mb-2">
+                  <p className="text-sm font-medium text-primaryText">
+                    {user?.fullname}
+                  </p>
+                </div>
                 <div>
-                  <p className="text-sm font-medium">{user?.fullname}</p>
+                  <p className="text-sm font-normal text-primaryText">
+                    {user?.description}
+                  </p>
                 </div>
               </div>
             </header>
@@ -190,7 +279,7 @@ const Profile = () => {
               )}
               <Link
                 to={`/profile/${user?.username}/tagged`}
-                className={`py-5 mr-[60px] -mt-[1px] border-t-[1px] ${
+                className={`py-5 -mt-[1px] border-t-[1px] ${
                   location.includes("tagged")
                     ? "border-black"
                     : "border-separator"
@@ -217,15 +306,13 @@ const Profile = () => {
               </Link>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center justify-center">
               {location.includes("saved") ? (
-                <div>SavedPosts</div>
+                <SavedPosts />
               ) : location.includes("tagged") ? (
-                <div>TaggedPosts</div>
+                <TaggedPosts />
               ) : (
-                <div className="w-full flex flex-wrap justify-center gap-7">
-                  <UserPosts posts={posts} setPosts={setPosts} />
-                </div>
+                <UserPosts posts={posts} setPosts={setPosts} />
               )}
             </div>
           </div>
@@ -350,6 +437,14 @@ const Profile = () => {
           </div>
         </footer>
       </div>
+
+      <AnimatePresence>
+        {isShowUserInteractionModal && (
+          <UserInteractionModal
+            setIsShowUserInteractionModal={setIsShowUserInteractionModal}
+          />
+        )}
+      </AnimatePresence>
     </HelmetProvider>
   );
 };

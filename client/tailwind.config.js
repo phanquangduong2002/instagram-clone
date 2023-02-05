@@ -13,6 +13,7 @@ module.exports = {
         coatingBgModal: "rgba(0,0,0,0.6)",
         highlightBg: "rgb(239,239,239)",
         secondaryButton: "rgb(239,239,239)",
+        secondaryButtonHover: "rgb(219,219,219)",
         secondaryBg: "rgb(250,250,250)",
         separator: "rgb(219,219,219)",
         postSeparator: "rgb(239,239,239)",

@@ -96,6 +96,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
       const [currentNewPost] = postsData.data.posts.filter(
         (post) => post._id === currentPost._id
       );
+      setCommentValue("");
       dispatch(findPost(currentNewPost));
       setPosts(postsData.data.posts);
     } catch (error) {
@@ -311,6 +312,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
                   </div>
                   <input
                     onChange={(e) => setCommentValue(e.target.value)}
+                    value={commentValue}
                     type="text"
                     className="flex-1 py-2 text-primaryText font-light text-sm outline-none"
                     placeholder="Thêm bình luận"

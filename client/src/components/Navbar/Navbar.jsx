@@ -54,7 +54,9 @@ const Navbar = () => {
               >
                 <span>
                   {!(
-                    location.includes("explore") || location.includes("profile")
+                    location.includes("explore") ||
+                    location.includes("profile") ||
+                    location.includes("edit")
                   ) ? (
                     <HomeIcon />
                   ) : (
@@ -65,7 +67,8 @@ const Navbar = () => {
                   className={`hidden xl:flex pl-5 text-primaryText ${
                     !(
                       location.includes("explore") ||
-                      location.includes("profile")
+                      location.includes("profile") ||
+                      location.includes("edit")
                     )
                       ? "font-semibold"
                       : "font-normal"
@@ -217,7 +220,9 @@ const Navbar = () => {
               className="w-full p-3 my-[2px] rounded-full bg-primaryBg flex items-center hover:bg-secondaryBg transition-all duration-150 ease-in-out"
             >
               {!(
-                location.includes("explore") || location.includes("profile")
+                location.includes("explore") ||
+                location.includes("profile") ||
+                location.includes("edit")
               ) ? (
                 <HomeIcon />
               ) : (
