@@ -29,11 +29,15 @@ const Signup = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const response = await axios.post(`${apiUrl}/auth/signup`, {
-        fullname,
-        username,
-        password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/auth/signup`,
+        {
+          fullname,
+          username,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (response.data.success) {
         dispatch(loginSuccess(response.data.user));
         navigate("/");

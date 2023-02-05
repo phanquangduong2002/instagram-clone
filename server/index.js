@@ -27,8 +27,13 @@ const connect = async () => {
 
 connect();
 
-app.use(cors());
+const corsOptions = {
+  credentials: true,
+  exposedHeaders: ["set-cookie"],
+};
+
 app.use(cookieParser());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/auth", AuthRoutes);

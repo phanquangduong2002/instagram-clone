@@ -20,7 +20,7 @@ router.post("/", verifyToken, createPost);
 router.delete("/:id", verifyToken, deletePost);
 
 // Like or dislike post
-router.put("/:id/like", likeOrDislike);
+router.put("/:id/like", verifyToken, likeOrDislike);
 
 // Get all timeline posts
 router.get("/timeline/:id", getAllPosts);
@@ -32,10 +32,10 @@ router.get("/user/:id", getUserPosts);
 router.get("/explore", getExplorePosts);
 
 // Create Comment
-router.post("/comment/:id", CreateComment);
+router.post("/comment/:id", verifyToken, CreateComment);
 
 // Delete comment
 
-router.delete("/comment/:id/delete", DeleteComment);
+router.delete("/comment/:id/delete", verifyToken, DeleteComment);
 
 export default router;

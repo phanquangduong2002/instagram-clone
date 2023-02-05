@@ -32,7 +32,7 @@ export const findUser = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  if (req.params.id === req.user.userId) {
+  if (req.params.id === req.user.id) {
     try {
       const updateUser = await User.findByIdAndUpdate(
         req.params.id,
@@ -69,10 +69,16 @@ export const followUser = async (req, res, next) => {
     const currentUser = await User.findById(req.body.id);
 
     if (!user.followers.includes(req.body.id)) {
-      await user.updateOne({ $push: { followers: req.body.id } });
-
-      await currentUser.updateOne({ $push: { following: req.params.id } });
-
+      await user.updateOne({
+        $push: {
+          followers: req.body.id,
+        },
+      });
+      await currentUser.updateOne({
+        $push: {
+          following: req.params.id,
+        },
+      });
       res.status(200).json({
         success: true,
         message: "Following the user",

@@ -28,10 +28,14 @@ const Login = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const response = await axios.post(`${apiUrl}/auth/signin`, {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        `${apiUrl}/auth/signin`,
+        {
+          username,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (response.data.success) {
         dispatch(loginSuccess(response.data.user));
         navigate("/");

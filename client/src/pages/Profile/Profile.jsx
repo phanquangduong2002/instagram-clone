@@ -50,7 +50,7 @@ const Profile = () => {
 
   const isFollowing = () => {
     const isFollowing =
-      user && user.following.some((user) => user._id === currentUser._id);
+      user && user.followers.some((user) => user._id === currentUser._id);
     return isFollowing;
   };
 
@@ -172,13 +172,13 @@ const Profile = () => {
                           </button>
                         </div>
                       </div>
+                      <div className="ml-[5px]">
+                        <button className="p-2">
+                          <LargeOptionIcon />
+                        </button>
+                      </div>
                     </>
                   )}
-                  <div className="ml-[5px]">
-                    <button className="p-2">
-                      <LargeOptionIcon />
-                    </button>
-                  </div>
                 </div>
                 <div className="mb-5"></div>
                 <div className="mb-5 flex">
@@ -310,7 +310,7 @@ const Profile = () => {
               {location.includes("saved") ? (
                 <SavedPosts />
               ) : location.includes("tagged") ? (
-                <TaggedPosts />
+                <TaggedPosts user={user} />
               ) : (
                 <UserPosts posts={posts} setPosts={setPosts} />
               )}
@@ -441,6 +441,8 @@ const Profile = () => {
       <AnimatePresence>
         {isShowUserInteractionModal && (
           <UserInteractionModal
+            user={user}
+            setUser={setUser}
             setIsShowUserInteractionModal={setIsShowUserInteractionModal}
           />
         )}

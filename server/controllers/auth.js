@@ -24,12 +24,12 @@ export const signup = async (req, res, next) => {
 
     await newUser.save();
 
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT);
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT);
 
     const { password, ...othersData } = newUser._doc;
 
     res
-      .cookie("access_token", token, {
+      .cookie("accesss_token", token, {
         httpOnly: true,
       })
       .status(200)
@@ -70,15 +70,15 @@ export const signin = async (req, res, next) => {
         .status(400)
         .json({ success: false, message: "Incorrect username or password" });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT);
+    const token = jwt.sign({ id: user._id }, process.env.JWT);
 
     const { password, ...othersData } = user._doc;
 
     res
+      .status(200)
       .cookie("access_token", token, {
         httpOnly: true,
       })
-      .status(200)
       .json({
         success: true,
         message: "User logged in successfully",
