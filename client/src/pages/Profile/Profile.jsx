@@ -54,6 +54,25 @@ const Profile = () => {
     return isFollowing;
   };
 
+  const FollowUser = async (e) => {
+    e.preventDefault();
+    try {
+      const follow = await axios.put(
+        `${apiUrl}/user/follow/${user._id}`,
+        {
+          id: currentUser._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
+      setUser(userProfile.data.user);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,7 +84,6 @@ const Profile = () => {
 
         if (userProfile.data.success) {
           setUser(userProfile.data.user);
-          console.log(userProfile.data.user);
           setTitle(
             `${userProfile.data.user.fullname} (@${userProfile.data.user.username})`
           );
@@ -144,6 +162,7 @@ const Profile = () => {
                             </button>
                           ) : (
                             <button
+                              onClick={FollowUser}
                               className="py-[7px] px-4 rounded-lg flex items-center bg-primaryButton hover:bg-primaryButtonHover
                             "
                             >

@@ -33,7 +33,12 @@ const UserInteractionModal = ({
           withCredentials: true,
         }
       );
-      console.log(unfollow.data);
+      const userProfile = await axios.get(
+        `${apiUrl}/user/get/${user.username}`
+      );
+
+      setUser(userProfile.data.user);
+      setIsShowUserInteractionModal(false);
     } catch (error) {
       console.log(error.response.data);
     }
