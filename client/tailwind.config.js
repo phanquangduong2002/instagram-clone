@@ -23,6 +23,7 @@ module.exports = {
         primaryButton: "rgb(0,149,246)",
         primaryButtonHover: "rgb(24,119,242)",
         linkText: "rgb(0,55,107)",
+        error: "rgb(237,73,86)",
       },
     },
   },

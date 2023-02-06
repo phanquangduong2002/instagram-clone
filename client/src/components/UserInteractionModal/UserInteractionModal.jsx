@@ -1,8 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import axios from "axios";
 import { apiUrl } from "../../api/constants";
+
+import { updateCurrentUser } from "../../redux/userSlice";
 
 import {
   BlackCloseIcon,
@@ -20,6 +22,8 @@ const UserInteractionModal = ({
 }) => {
   const { currentUser } = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
+
   const handleFollowing = async (e) => {
     e.preventDefault();
 
@@ -36,7 +40,6 @@ const UserInteractionModal = ({
       const userProfile = await axios.get(
         `${apiUrl}/user/get/${user.username}`
       );
-
       setUser(userProfile.data.user);
       setIsShowUserInteractionModal(false);
     } catch (error) {
@@ -62,7 +65,7 @@ const UserInteractionModal = ({
             <div className="p-4 flex flex-col justify-center items-center">
               <span className="w-14 h-14">
                 <img
-                  src={TtImage}
+                  src={user?.profilePicture}
                   className="w-full h-full object-cover object-center rounded-full"
                   alt=""
                 />

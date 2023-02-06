@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 import { motion } from "framer-motion";
 
-import AvatarImage from "../../assets/images/avatar.jpg";
 import {
   InstagramText,
   InstagramIcon,
@@ -166,7 +165,7 @@ const Navbar = () => {
               >
                 <span>
                   <img
-                    src={AvatarImage}
+                    src={currentUser?.profilePicture}
                     className={`w-[26px] h-[26px] rounded-full border-[2px] ${
                       location.includes(`profile/${currentUser?.username}`)
                         ? "border-primaryText"
@@ -268,7 +267,7 @@ const Navbar = () => {
               className="w-full p-3 my-[2px] rounded-full bg-primaryBg flex items-center hover:bg-secondaryBg transition-all duration-150 ease-in-out"
             >
               <img
-                src={AvatarImage}
+                src={currentUser?.profilePicture}
                 className={`w-[26px] h-[26px] rounded-full border-[2px] ${
                   location.includes("profile")
                     ? "border-primaryText"

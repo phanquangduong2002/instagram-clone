@@ -13,38 +13,38 @@ const TimelineStory = () => {
 
   return (
     <div className="flex items-center gap-x-[2px]">
-      <div key={currentUser._id} className="flex w-20">
+      <div className="flex w-20">
         <button
           onClick={(e) => e.preventDefault()}
           className="flex flex-col w-full justify-center items-center"
         >
           <span className="w-16 h-16 mt-1 mb-2 p-[2px] rounded-full border-[1px] border-separator overflow-hidden">
             <img
-              src={AvatarImage}
+              src={currentUser?.profilePicture}
               className="w-full h-full rounded-full object-cover object-center"
               alt=""
             />
           </span>
           <span className="w-full px-[2px] text-xs text-secondaryText font-normal truncate">
-            {currentUser.username}
+            {currentUser?.username}
           </span>
         </button>
       </div>
       {currentUser.following.map((followerUser) => (
-        <div key={followerUser._id} className="flex w-20">
+        <div key={followerUser?._id} className="flex w-20">
           <button
             onClick={(e) => e.preventDefault()}
             className="flex flex-col w-full justify-center items-center"
           >
             <span className="w-16 h-16 mt-1 mb-2 p-[2px] rounded-full border-[1px] border-separator overflow-hidden">
               <img
-                src={TtImage}
+                src={followerUser?.profilePicture}
                 className="w-full h-full rounded-full object-cover object-center"
                 alt=""
               />
             </span>
             <span className="w-full px-[2px] text-xs text-secondaryText font-normal truncate">
-              {followerUser.username}
+              {followerUser?.username}
             </span>
           </button>
         </div>

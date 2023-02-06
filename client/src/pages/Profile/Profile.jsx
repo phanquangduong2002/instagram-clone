@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -7,6 +7,8 @@ import { AnimatePresence } from "framer-motion";
 
 import axios from "axios";
 import { apiUrl } from "../../api/constants";
+
+import { updateCurrentUser } from "../../redux/userSlice";
 
 import AvatarImage from "../../assets/images/avatar.jpg";
 import {
@@ -41,10 +43,11 @@ const Profile = () => {
 
   const [isShowUserInteractionModal, setIsShowUserInteractionModal] =
     useState(false);
-
   const [isShowChangeAvatarModal, setIsShowChangeAavarModal] = useState(false);
-
   const [isShowPostModal, setIsShowPostModal] = useState(false);
+
+  const dispatch = useDispatch();
+
   const location = useLocation().pathname;
 
   const { username } = useParams();
@@ -72,6 +75,7 @@ const Profile = () => {
         }
       );
       const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
+
       setUser(userProfile.data.user);
     } catch (error) {
       console.log(error.response?.data);
@@ -127,11 +131,7 @@ const Profile = () => {
                       className="w-full h-full"
                     >
                       <img
-                        src={
-                          user?.profilePicture
-                            ? user.profilePicture
-                            : AvatarImage
-                        }
+                        src={user?.profilePicture}
                         className="w-full h-full rounded-full"
                         alt={`Avatar ${user?.username}`}
                       />

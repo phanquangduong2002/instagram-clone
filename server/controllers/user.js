@@ -44,34 +44,25 @@ export const findUser = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  if (req.params.id === req.user.id) {
-    try {
-      const updateUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-          $set: req.body,
-        },
-        { new: true }
-      )
-        .populate("followers", ["-password"])
-        .populate("following", ["-password"]);
-      const { password, ...othersData } = updateUser._doc;
-      res.status(200).json({
-        success: true,
-        message: "User information updated successfully",
-        user: othersData,
-      });
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ success: false, message: "Internal server error" });
-    }
-  } else {
-    res.status(403).json({
-      success: false,
-      message: "You can update only your account",
+  try {
+    const updateUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    )
+      .populate("followers", ["-password"])
+      .populate("following", ["-password"]);
+    const { password, ...othersData } = updateUser._doc;
+    res.status(200).json({
+      success: true,
+      message: "User information updated successfully",
+      user: othersData,
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 

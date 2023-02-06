@@ -26,7 +26,9 @@ const Post = ({ post, setData, setIsShowPostModal }) => {
   const dispatch = useDispatch();
 
   const isLike = () => {
-    const isLikePost = post.likes.some((like) => like._id === currentUser._id);
+    const isLikePost = post.likes.some(
+      (like) => like?._id === currentUser?._id
+    );
     return isLikePost;
   };
 
@@ -64,13 +66,9 @@ const Post = ({ post, setData, setIsShowPostModal }) => {
         <div className="flex-1">
           <header className="my-2 mx-1 flex items-center">
             <div>
-              <Link to={`/profile/${post.userId.username}`}>
+              <Link to={`/profile/${post?.userId?.username}`}>
                 <img
-                  src={
-                    post.userId.profilePicture
-                      ? post.userId.profilePicture
-                      : AvatarImage
-                  }
+                  src={post?.userId?.profilePicture}
                   className="w-8 h-8 rounded-full"
                   alt={`Avatar ${post.userId.username}`}
                 />

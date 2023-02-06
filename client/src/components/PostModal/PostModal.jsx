@@ -131,7 +131,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
         <div className="w-full h-full flex items-center justify-center overflow-hidden">
           <div className="w-[380px] max-w-[380px] h-full bg-black flex items-center justify-center">
             <img
-              src={TtImage}
+              src={currentPost?.userId?.profilePicture}
               className="w-full object-cover object-center"
               alt=""
             />
@@ -179,7 +179,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
                       className="w-full h-full"
                     >
                       <img
-                        src={TtImage}
+                        src={currentPost?.userId?.profilePicture}
                         className="w-full h-full object-cover object-center rounded-full"
                         alt=""
                       />
@@ -200,19 +200,19 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
 
               {currentPost.comments &&
                 currentPost.comments.map((comment) => (
-                  <ul key={comment._id} className="mb-4">
+                  <ul key={comment?._id} className="mb-4">
                     <div className="w-full">
                       <div className="pt-3">
                         <div className="w-full flex items-start">
                           <div className="w-8 h-8 mr-[14px]">
                             <Link
                               onClick={() =>
-                                handlePostModal(comment.userId._id)
+                                handlePostModal(comment?.userId?._id)
                               }
-                              to={`/profile/${comment.userId.username}`}
+                              to={`/profile/${comment?.userId?.username}`}
                             >
                               <img
-                                src={TtImage}
+                                src={comment?.userId?.profilePicture}
                                 className="w-full h-full object-cover object-center rounded-full"
                                 alt=""
                               />
@@ -287,7 +287,10 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
               <div className="w-full flex items-center">
                 <div className="mr-2 w-5 h-5">
                   <img
-                    src={TtImage}
+                    src={
+                      currentPost.likes[currentPost.likes.length - 1]
+                        ?.profilePicture
+                    }
                     className="w-full h-full object-cover object-center rounded-full"
                     alt=""
                   />

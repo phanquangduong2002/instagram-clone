@@ -2,8 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import AvatarImage from "../../assets/images/avatar.jpg";
-
 const Sidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   return (
@@ -13,7 +11,7 @@ const Sidebar = () => {
           <Link to={`profile/${currentUser.username}`}>
             <div className="w-14 h-14 mr-3 rounded-full overflow-hidden">
               <img
-                src={AvatarImage}
+                src={currentUser?.profilePicture}
                 className="w-full h-full rounded-full object-cover object-center"
                 alt="Avatar current user"
               />
