@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 
 import PostModal from "../PostModal/PostModal";
@@ -7,13 +6,8 @@ import PostStorage from "../PostStorage/PostStorage";
 
 import { CameraIcon } from "../../assets/icons";
 
-const UserPosts = ({ user, posts, setPosts }) => {
+const UserPosts = ({ user, posts, setIsShowPostModal, setPosts }) => {
   const { currentUser } = useSelector((state) => state.user);
-  const [isShowPostModal, setIsShowPostModal] = useState(false);
-
-  isShowPostModal
-    ? (document.body.style.overflow = "hidden")
-    : (document.body.style.overflow = "visible");
 
   return (
     <div className="w-full flex flex-wrap justify-center gap-7 relative">
@@ -62,14 +56,6 @@ const UserPosts = ({ user, posts, setPosts }) => {
           )}
         </div>
       )}
-      <AnimatePresence>
-        {isShowPostModal && (
-          <PostModal
-            setPosts={setPosts}
-            setIsShowPostModal={setIsShowPostModal}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 };

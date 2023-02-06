@@ -31,6 +31,7 @@ export const signup = async (req, res, next) => {
     res
       .cookie("accesss_token", token, {
         httpOnly: true,
+        expires: new Date(Date.now() + 8 * 3600000),
       })
       .status(200)
       .json({
@@ -78,6 +79,7 @@ export const signin = async (req, res, next) => {
       .status(200)
       .cookie("access_token", token, {
         httpOnly: true,
+        expires: new Date(Date.now() + 8 * 3600000),
       })
       .json({
         success: true,

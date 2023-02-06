@@ -47,7 +47,7 @@ const Post = ({ post, setData, setIsShowPostModal }) => {
 
       if (postsData.data.success) setData(postsData.data.posts);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response?.data);
     }
   };
 

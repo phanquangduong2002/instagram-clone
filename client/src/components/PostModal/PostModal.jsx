@@ -93,17 +93,28 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
         },
         { withCredentials: true }
       );
-      const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
-
-      const postsData = await axios.get(
-        `${apiUrl}/posts/user/${userProfile.data.user._id}`
-      );
-      const [currentNewPost] = postsData.data.posts.filter(
-        (post) => post._id === currentPost._id
-      );
       setCommentValue("");
-      dispatch(findPost(currentNewPost));
-      setPosts(postsData.data.posts);
+      if (location.includes("profile")) {
+        const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
+
+        const postsData = await axios.get(
+          `${apiUrl}/posts/user/${userProfile.data.user._id}`
+        );
+        const [currentNewPost] = postsData.data.posts.filter(
+          (post) => post._id === currentPost._id
+        );
+        dispatch(findPost(currentNewPost));
+        setPosts(postsData.data.posts);
+      } else {
+        const postsData = await axios.get(
+          `${apiUrl}/posts/timeline/${currentUser._id}`
+        );
+        const [currentNewPost] = postsData.data.posts.filter(
+          (post) => post._id === currentPost._id
+        );
+        dispatch(findPost(currentNewPost));
+        setPosts(postsData.data.posts);
+      }
     } catch (error) {
       console.log(error.response.data);
     }

@@ -28,6 +28,8 @@ import TaggedPosts from "../../components/TaggedPosts/TaggedPosts";
 import SavedPosts from "../../components/SavedPosts/SavedPosts";
 
 import UserInteractionModal from "../../components/UserInteractionModal/UserInteractionModal";
+import ChangeAvatarModal from "../../components/ChangeAvatarModal/ChangeAvatarModal";
+import PostModal from "../../components/PostModal/PostModal";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -40,11 +42,14 @@ const Profile = () => {
   const [isShowUserInteractionModal, setIsShowUserInteractionModal] =
     useState(false);
 
+  const [isShowChangeAvatarModal, setIsShowChangeAavarModal] = useState(false);
+
+  const [isShowPostModal, setIsShowPostModal] = useState(false);
   const location = useLocation().pathname;
 
   const { username } = useParams();
 
-  isShowUserInteractionModal
+  isShowUserInteractionModal || isShowPostModal || isShowChangeAvatarModal
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "visible");
 
@@ -117,7 +122,10 @@ const Profile = () => {
               <header className="mb-10 flex">
                 <div className="mr-[30px]">
                   <div className="mx-16 w-[150px] h-[150px]">
-                    <button className="w-full h-full">
+                    <button
+                      onClick={() => setIsShowChangeAavarModal(true)}
+                      className="w-full h-full"
+                    >
                       <img
                         src={
                           user?.profilePicture
@@ -341,7 +349,12 @@ const Profile = () => {
                 ) : location.includes("tagged") ? (
                   <TaggedPosts user={user} />
                 ) : (
-                  <UserPosts user={user} posts={posts} setPosts={setPosts} />
+                  <UserPosts
+                    user={user}
+                    posts={posts}
+                    setIsShowPostModal={setIsShowPostModal}
+                    setPosts={setPosts}
+                  />
                 )}
               </div>
             </div>
@@ -469,13 +482,29 @@ const Profile = () => {
       )}
 
       <AnimatePresence>
-        {isShowUserInteractionModal && (
-          <UserInteractionModal
-            user={user}
-            setUser={setUser}
-            setIsShowUserInteractionModal={setIsShowUserInteractionModal}
-          />
-        )}
+        <>
+          {isShowUserInteractionModal && (
+            <UserInteractionModal
+              user={user}
+              setUser={setUser}
+              setIsShowUserInteractionModal={setIsShowUserInteractionModal}
+            />
+          )}
+
+          {isShowPostModal && (
+            <PostModal
+              setPosts={setPosts}
+              setIsShowPostModal={setIsShowPostModal}
+            />
+          )}
+          {isShowChangeAvatarModal && (
+            <ChangeAvatarModal
+              user={user}
+              setUser={setUser}
+              setIsShowChangeAavarModal={setIsShowChangeAavarModal}
+            />
+          )}
+        </>
       </AnimatePresence>
     </HelmetProvider>
   );

@@ -158,7 +158,7 @@ const Navbar = () => {
                 </span>
               </motion.div>
             </button>
-            <Link to={`/profile/${currentUser.username}`}>
+            <Link to={`/profile/${currentUser?.username}`}>
               <motion.div
                 whileTap={{ opacity: 0.4 }}
                 transition={{ duration: 0.1 }}
@@ -168,7 +168,7 @@ const Navbar = () => {
                   <img
                     src={AvatarImage}
                     className={`w-[26px] h-[26px] rounded-full border-[2px] ${
-                      location.includes(`profile/${currentUser.username}`)
+                      location.includes(`profile/${currentUser?.username}`)
                         ? "border-primaryText"
                         : "border-primaryBg"
                     }`}
@@ -177,7 +177,7 @@ const Navbar = () => {
                 </span>
                 <span
                   className={`hidden xl:flex pl-5 text-primaryText ${
-                    location.includes(`profile/${currentUser.username}`)
+                    location.includes(`profile/${currentUser?.username}`)
                       ? "font-semibold"
                       : "font-normal"
                   }`}
@@ -261,7 +261,7 @@ const Navbar = () => {
               <MessageIcon />
             </motion.div>
           </button>
-          <Link to="/profile/:username">
+          <Link to={`/profile/${currentUser?.username}`}>
             <motion.div
               whileTap={{ opacity: 0.4, scale: 0.9 }}
               transition={{ duration: 0.1 }}
