@@ -6,7 +6,13 @@ import PostStorage from "../PostStorage/PostStorage";
 
 import { CameraIcon } from "../../assets/icons";
 
-const UserPosts = ({ user, posts, setIsShowPostModal, setPosts }) => {
+const UserPosts = ({
+  user,
+  posts,
+  setIsShowPostModal,
+  setPosts,
+  setIsShowCreatePostModal,
+}) => {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
@@ -21,9 +27,18 @@ const UserPosts = ({ user, posts, setIsShowPostModal, setPosts }) => {
         <div className="my-[60px] mx-11 max-w-[350px] flex flex-col justify-center">
           {/* 1 */}
           <div className="flex items-center justify-center">
-            <button className="w-16 h-16 flex items-center justify-center rounded-full border-[1.5px] border-primaryText">
-              <CameraIcon />
-            </button>
+            {user?._id === currentUser._id ? (
+              <button
+                onClick={() => setIsShowCreatePostModal(true)}
+                className="w-16 h-16 flex items-center justify-center rounded-full border-[1.5px] border-primaryText"
+              >
+                <CameraIcon />
+              </button>
+            ) : (
+              <div className="w-16 h-16 flex items-center justify-center rounded-full border-[1.5px] border-primaryText">
+                <CameraIcon />
+              </div>
+            )}
           </div>
           {/* 2 */}
           <div className="my-6">

@@ -283,38 +283,43 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
               </span>
             </div>
             {/* 4 */}
-            <div className="px-4 mb-1">
-              <div className="w-full flex items-center">
-                <div className="mr-2 w-5 h-5">
-                  <img
-                    src={
-                      currentPost.likes[currentPost.likes.length - 1]
-                        ?.profilePicture
-                    }
-                    className="w-full h-full object-cover object-center rounded-full"
-                    alt=""
-                  />
-                </div>
-                <div className="my-1 flex items-center text-primaryText font-normal text-sm">
-                  <span className="font-medium pr-[3px]">
-                    {currentPost.likes[currentPost.likes.length - 1].username}
-                  </span>
-                  {currentPost.likes.length >= 2 && (
-                    <>
-                      <span>và</span>
-                      <span className="font-medium px-[3px]">
-                        {currentPost.likes.length - 1} người khác
-                      </span>
-                    </>
-                  )}
-                  đã thích
+            {currentPost.likes && currentPost.likes.length >= 1 && (
+              <div className="px-4 mb-1">
+                <div className="w-full flex items-center">
+                  <div className="mr-2 w-5 h-5">
+                    <img
+                      src={
+                        currentPost.likes[currentPost.likes.length - 1]
+                          ?.profilePicture
+                      }
+                      className="w-full h-full object-cover object-center rounded-full"
+                      alt=""
+                    />
+                  </div>
+                  <div className="my-1 flex items-center text-primaryText font-normal text-sm">
+                    <span className="font-medium pr-[3px]">
+                      {
+                        currentPost.likes[currentPost.likes.length - 1]
+                          ?.username
+                      }
+                    </span>
+                    {currentPost.likes.length >= 2 && (
+                      <>
+                        <span>và</span>
+                        <span className="font-medium px-[3px]">
+                          {currentPost.likes.length - 1} người khác
+                        </span>
+                      </>
+                    )}
+                    đã thích
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             {/* 5 */}
             <div className="px-4 mb-4">
               <p className="text-secondaryText text-[10px] font-normal uppercase">
-                {formatDate(currentPost.createdAt)}
+                {formatDate(currentPost?.createdAt)}
               </p>
             </div>
             {/* 5 */}

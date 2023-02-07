@@ -32,6 +32,7 @@ import SavedPosts from "../../components/SavedPosts/SavedPosts";
 import UserInteractionModal from "../../components/UserInteractionModal/UserInteractionModal";
 import ChangeAvatarModal from "../../components/ChangeAvatarModal/ChangeAvatarModal";
 import PostModal from "../../components/PostModal/PostModal";
+import CreatePostModal from "../../components/CreatePostModal/CreatePostModal";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -45,6 +46,7 @@ const Profile = () => {
     useState(false);
   const [isShowChangeAvatarModal, setIsShowChangeAavarModal] = useState(false);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
+  const [isShowCreatePostModal, setIsShowCreatePostModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -52,7 +54,10 @@ const Profile = () => {
 
   const { username } = useParams();
 
-  isShowUserInteractionModal || isShowPostModal || isShowChangeAvatarModal
+  isShowUserInteractionModal ||
+  isShowPostModal ||
+  isShowChangeAvatarModal ||
+  isShowCreatePostModal
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "visible");
 
@@ -86,8 +91,6 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
-
-        console.log(userProfile.data);
 
         const postsData = await axios.get(
           `${apiUrl}/posts/user/${userProfile.data.user._id}`
@@ -353,6 +356,7 @@ const Profile = () => {
                     user={user}
                     posts={posts}
                     setIsShowPostModal={setIsShowPostModal}
+                    setIsShowCreatePostModal={setIsShowCreatePostModal}
                     setPosts={setPosts}
                   />
                 )}
@@ -502,6 +506,11 @@ const Profile = () => {
               user={user}
               setUser={setUser}
               setIsShowChangeAavarModal={setIsShowChangeAavarModal}
+            />
+          )}
+          {isShowCreatePostModal && (
+            <CreatePostModal
+              setIsShowCreatePostModal={setIsShowCreatePostModal}
             />
           )}
         </>

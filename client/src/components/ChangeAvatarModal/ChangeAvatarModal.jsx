@@ -63,7 +63,7 @@ const ChangeAvatarModal = ({ user, setUser, setIsShowChangeAavarModal }) => {
       <div className="w-full h-full flex items-center justify-center">
         <div className="w-[400px] bg-primaryBg rounded-xl overflow-hidden">
           <div className="flex flex-col items-center">
-            <div className="w-full mt-8 mx-8 mb-4">
+            <div className="mt-8 mx-8 mb-4">
               <h3 className="text-xl text-primaryText font-normal text-center">
                 Thay đổi ảnh đại diện
               </h3>
