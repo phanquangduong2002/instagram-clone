@@ -9,7 +9,7 @@ Các tính năng hiện tại của trang web
 - Create Post
 - Like / Dislike post
 - Comment post
-- 
+
 Những công nghệ được sử dụng
 - Create react app
 - React router v6
