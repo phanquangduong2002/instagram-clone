@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+
+import CreatePostModal from "../CreatePostModal/CreatePostModal";
 
 import {
   InstagramText,
@@ -21,6 +23,7 @@ import {
 
 const Navbar = () => {
   const [openSetting, setOpenSetting] = useState(false);
+  const [isShowCreatePostModal, setIsShowCreatePostModal] = useState(false);
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -30,7 +33,7 @@ const Navbar = () => {
 
   const location = useLocation().pathname;
   return (
-    <>
+    <div className="relative">
       {/* Pc and taplet */}
       <div className="hidden md:flex fixed left-0 top-0 z-[1000] h-screen w-[72px] xl:w-[244px] border-r-[1px] border-separator">
         <div className="w-full h-full bg-primaryBg px-3 pt-2 pb-5 flex flex-col items-start">
@@ -143,7 +146,10 @@ const Navbar = () => {
                 </span>
               </motion.div>
             </button>
-            <button className="w-full">
+            <button
+              onClick={() => setIsShowCreatePostModal(true)}
+              className="w-full"
+            >
               <motion.div
                 whileTap={{ opacity: 0.4 }}
                 transition={{ duration: 0.1 }}
@@ -279,7 +285,14 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-    </>
+      <AnimatePresence>
+        {isShowCreatePostModal && (
+          <CreatePostModal
+            setIsShowCreatePostModal={setIsShowCreatePostModal}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

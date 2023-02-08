@@ -44,11 +44,11 @@ const ChangeAvatarModal = ({ user, setUser, setIsShowChangeAavarModal }) => {
               },
               { withCredentials: true }
             );
+            setIsShowChangeAavarModal(false);
+            dispatch(changeProfile(downloadURL));
           } catch (error) {
             console.log(error.response.data);
           }
-          setIsShowChangeAavarModal(false);
-          dispatch(changeProfile(downloadURL));
         });
       }
     );

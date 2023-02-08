@@ -23,7 +23,7 @@ const PostStorage = ({ post, setIsShowPostModal }) => {
       <button onClick={handlePostModal} className="w-full h-full">
         <div className="w-full h-full">
           <img
-            src={TtImages}
+            src={post?.photos[0]}
             className="w-full h-full object-cover object-center"
             alt=""
           />

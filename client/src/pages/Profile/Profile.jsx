@@ -510,6 +510,8 @@ const Profile = () => {
           )}
           {isShowCreatePostModal && (
             <CreatePostModal
+              user={user}
+              setPosts={setPosts}
               setIsShowCreatePostModal={setIsShowCreatePostModal}
             />
           )}

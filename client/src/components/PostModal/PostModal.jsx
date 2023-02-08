@@ -131,7 +131,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
         <div className="w-full h-full flex items-center justify-center overflow-hidden">
           <div className="w-[380px] max-w-[380px] h-full bg-black flex items-center justify-center">
             <img
-              src={currentPost?.userId?.profilePicture}
+              src={currentPost?.photos[0]}
               className="w-full object-cover object-center"
               alt=""
             />
@@ -147,7 +147,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
                       className="w-full h-full"
                     >
                       <img
-                        src={TtImage}
+                        src={currentPost?.userId?.profilePicture}
                         className="w-full h-full object-contain object-center rounded-full"
                         alt=""
                       />

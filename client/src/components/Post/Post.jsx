@@ -97,7 +97,13 @@ const Post = ({ post, setData, setIsShowPostModal }) => {
         </div>
       </div>
 
-      <div></div>
+      <div className="w-full">
+        <img
+          src={post?.photos[0]}
+          className="w-full object-cover object-center"
+          alt=""
+        />
+      </div>
 
       <div className="w-full">
         <section className="w-full mt-1 -mx-2 pb-[6px] flex items-center">
