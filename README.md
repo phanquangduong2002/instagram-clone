@@ -2,6 +2,8 @@
 
 Backend(Node + Express + Mongodb) Frontend(React + Tailwindcss)
 
+No responsive
+
 Các tính năng hiện tại của trang web
 - Sign up / Sign in
 - Change Avatar
