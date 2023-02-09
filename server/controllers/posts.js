@@ -79,7 +79,8 @@ export const getAllPosts = async (req, res, next) => {
       .populate({
         path: "comments",
         populate: { path: "userId", select: "-passowrd" },
-      });
+      })
+      .sort({ createAt: 1 });
     const followersPosts = await Promise.all(
       currentUser.following.map((followerId) => {
         return Post.find({ userId: followerId })
@@ -115,7 +116,7 @@ export const getUserPosts = async (req, res, next) => {
         populate: { path: "userId", select: "-password" },
       })
       .sort({
-        createAt: -1,
+        createAt: 1,
       });
     res.status(200).json({
       success: true,
