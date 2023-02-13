@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { AnimatePresence, motion } from "framer-motion";
 
 import CreatePostModal from "../CreatePostModal/CreatePostModal";
+import useDebounce from "../../hooks/useDebounce";
 
 import {
   InstagramText,
@@ -22,20 +23,54 @@ import {
   SearchInputIcon,
   CloseInputIcon,
 } from "../../assets/icons";
+import axios from "axios";
+import { apiUrl } from "../../api/constants";
 
 const Navbar = () => {
   const [openSetting, setOpenSetting] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [isShowCreatePostModal, setIsShowCreatePostModal] = useState(false);
   const [valueInput, setValueInput] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   const { currentUser } = useSelector((state) => state.user);
+
+  const location = useLocation().pathname;
+
+  const debounced = useDebounce(valueInput, 500);
 
   const handleSetting = () => {
     setOpenSetting(!openSetting);
   };
 
-  const location = useLocation().pathname;
+  const handleClearInput = () => {
+    setValueInput("");
+    setSearchResult([]);
+  };
+
+  useEffect(() => {
+    if (!debounced.trim()) {
+      setSearchResult([]);
+      return;
+    }
+    const fetchApi = async () => {
+      setLoading(true);
+
+      const result = await axios.get(
+        `${apiUrl}/user/search?q=${encodeURIComponent(valueInput)}`
+      );
+
+      console.log(result.data.users);
+      if (result.data.success) {
+        setSearchResult(result.data.users);
+      }
+
+      setLoading(false);
+    };
+    fetchApi();
+  }, [debounced]);
+
   return (
     <div className="relative">
       {/* Pc and taplet */}
@@ -294,7 +329,7 @@ const Navbar = () => {
             animate={{ width: 400 }}
             exit={{ width: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute left-[76px] h-screen py-2 border-r-[1px] border-separator rounded-tr-xl rounded-br-xl drop-shadow-[4px_0_24px_rgba(0,0,0,0.15)] bg-primaryBg"
+            className="fixed left-[76px] h-screen py-2 border-r-[1px] border-separator rounded-tr-xl rounded-br-xl drop-shadow-[4px_0_24px_rgba(0,0,0,0.15)] bg-primaryBg"
           >
             <div className="w-full h-full flex flex-col">
               <div className="w-full flex flex-col">
@@ -311,12 +346,15 @@ const Navbar = () => {
                     <input
                       type="text"
                       value={valueInput}
-                      onChange={(e) => setValueInput(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.startsWith(" ")) return;
+                        else setValueInput(e.target.value);
+                      }}
                       placeholder="Tìm kiếm"
                       className="w-full px-4 py-2 bg-highlightBg rounded-lg outline-none text-primaryText tex-sm font-normal placeholder:text-secondaryText placeholder:font-light placeholder:text-sm"
                     />
                     <button
-                      onClick={() => setValueInput("")}
+                      onClick={handleClearInput}
                       className="absolute top-1/2 -translate-y-1/2 p-2 right-2 cursor-pointer"
                     >
                       <CloseInputIcon />
@@ -326,16 +364,54 @@ const Navbar = () => {
 
                 <div className="flex-1 border-t-[1px] border-separator pt-3">
                   <div className="h-full flex flex-col">
-                    <div className="mt-[6px] mx-6 mb-2">
-                      <h4 className="text-primaryText font-medium text-base">
-                        Gần đây
-                      </h4>
-                    </div>
+                    {!(searchResult && searchResult.length >= 1) && (
+                      <div className="mt-[6px] mx-6 mb-2">
+                        <h4 className="text-primaryText font-medium text-base">
+                          Gần đây
+                        </h4>
+                      </div>
+                    )}
 
                     <div className="flex-1 flex flex-col items-center justify-center">
-                      <p className="text-secondaryText font-medium text-sm">
-                        Không có nội dung tìm kiếm mới đây.
-                      </p>
+                      {searchResult && searchResult.length >= 1 ? (
+                        <div className="w-full h-full pt-3 flex flex-col overflow-y-scroll">
+                          {searchResult.map((user) => (
+                            <div key={user?._id} className="w-full">
+                              <Link
+                                onClick={() => {
+                                  setValueInput("");
+                                  searchResult([]);
+                                  setOpenSearch(false);
+                                }}
+                                to={`/profile/${user?.username}`}
+                              >
+                                <div className="py-2 px-6 flex items-center">
+                                  <div className="mr-3 w-11 h-11">
+                                    <img
+                                      src={user?.profilePicture}
+                                      className="w-full h-full object-cover object-center rounded-full"
+                                      alt=""
+                                    />
+                                  </div>
+
+                                  <div className="flex-1 flex flex-col">
+                                    <span className="text-primaryText font-semibold text-sm">
+                                      {user?.username}
+                                    </span>
+                                    <p className="mt-1 text-secondaryText font-normal text-sm">
+                                      {user?.fullname}
+                                    </p>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-secondaryText font-medium text-sm">
+                          Không có nội dung tìm kiếm mới đây.
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

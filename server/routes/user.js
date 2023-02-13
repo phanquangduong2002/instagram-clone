@@ -5,6 +5,7 @@ import {
   updateUser,
   followUser,
   unfollowUser,
+  searchUser,
 } from "../controllers/user.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -16,6 +17,9 @@ router.get("/find/:id", getUser);
 // Get user by username
 
 router.get("/get/:username", findUser);
+
+// Search user by username
+router.get("/search", searchUser);
 
 // Update User
 router.put("/update/:id", verifyToken, updateUser);

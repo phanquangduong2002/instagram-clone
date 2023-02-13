@@ -43,6 +43,32 @@ export const findUser = async (req, res, next) => {
   }
 };
 
+export const searchUser = async (req, res, next) => {
+  try {
+    const users = await User.find({
+      username: {
+        $regex: req.query.q,
+        $options: "i",
+      },
+    })
+      .select("-password")
+      .populate("followers", ["-password"])
+      .populate("following", ["-password"]);
+    if (!users)
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
+
+    return res.status(200).json({
+      success: true,
+      users: users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 export const updateUser = async (req, res, next) => {
   try {
     const updateUser = await User.findByIdAndUpdate(
