@@ -35,13 +35,9 @@ const Post = ({ post, setData, setIsShowPostModal }) => {
   const handleLike = async (e) => {
     e.preventDefault();
     try {
-      const like = await axios.put(
-        `${apiUrl}/posts/${post._id}/like`,
-        {
-          id: currentUser._id,
-        },
-        { withCredentials: true }
-      );
+      const like = await axios.put(`${apiUrl}/posts/${post._id}/like`, {
+        id: currentUser._id,
+      });
 
       const postsData = await axios.get(
         `${apiUrl}/posts/timeline/${currentUser._id}`

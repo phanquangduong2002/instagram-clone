@@ -41,8 +41,7 @@ const ChangeAvatarModal = ({ user, setUser, setIsShowChangeAavarModal }) => {
               `${apiUrl}/user/update/${currentUser._id}`,
               {
                 profilePicture: downloadURL,
-              },
-              { withCredentials: true }
+              }
             );
             setIsShowChangeAavarModal(false);
             dispatch(changeProfile(downloadURL));

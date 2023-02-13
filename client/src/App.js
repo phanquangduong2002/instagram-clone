@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Explore from "./pages/Explore/Explore";
@@ -8,6 +9,9 @@ import Error from "./pages/Error/Error";
 import Edit from "./pages/Edit/Edit";
 
 import Navbar from "./components/Navbar/Navbar";
+
+import { LOCAL_STORAGE_TOKEN_NAME } from "./api/constants";
+import setAuthToken from "./utils/setAuthToken";
 
 const Layout = () => {
   return (
@@ -61,6 +65,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  useEffect(() => {
+    if (localStorage[LOCAL_STORAGE_TOKEN_NAME]) {
+      setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
+    }
+  }, []);
+
   return (
     <div>
       <RouterProvider router={router}></RouterProvider>

@@ -70,15 +70,9 @@ const Profile = () => {
   const FollowUser = async (e) => {
     e.preventDefault();
     try {
-      const follow = await axios.put(
-        `${apiUrl}/user/follow/${user._id}`,
-        {
-          id: currentUser._id,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const follow = await axios.put(`${apiUrl}/user/follow/${user._id}`, {
+        id: currentUser._id,
+      });
       const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
 
       setUser(userProfile.data.user);

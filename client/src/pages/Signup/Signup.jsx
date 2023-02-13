@@ -15,6 +15,9 @@ import {
 import GooglePlayLogo from "../../assets/images/GooglePlay-Logo.png";
 import MicrosoftLogo from "../../assets/images/Microsoft-Logo.png";
 
+import { LOCAL_STORAGE_TOKEN_NAME } from "../../api/constants";
+import setAuthToken from "../../utils/setAuthToken";
+
 const Signup = () => {
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
@@ -29,17 +32,18 @@ const Signup = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const response = await axios.post(
-        `${apiUrl}/auth/signup`,
-        {
-          fullname,
-          username,
-          password,
-        },
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${apiUrl}/auth/signup`, {
+        fullname,
+        username,
+        password,
+      });
       if (response.data.success) {
         dispatch(loginSuccess(response.data.user));
+        localStorage.setItem(
+          LOCAL_STORAGE_TOKEN_NAME,
+          response.data.accessToken
+        );
+        setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
         navigate("/");
       }
     } catch (error) {

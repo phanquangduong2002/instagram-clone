@@ -28,15 +28,9 @@ const UserInteractionModal = ({
     e.preventDefault();
 
     try {
-      const unfollow = await axios.put(
-        `${apiUrl}/user/unfollow/${user._id}`,
-        {
-          id: currentUser._id,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const unfollow = await axios.put(`${apiUrl}/user/unfollow/${user._id}`, {
+        id: currentUser._id,
+      });
       const userProfile = await axios.get(
         `${apiUrl}/user/get/${user.username}`
       );

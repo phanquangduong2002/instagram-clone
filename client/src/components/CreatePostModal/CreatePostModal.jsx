@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../api/constants";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { CloseIcon, FileIcon, BackIcon } from "../../assets/icons";
 import SuccessIcon from "../../assets/images/success.gif";
@@ -13,7 +13,7 @@ import SuccessIcon from "../../assets/images/success.gif";
 import {
   resizeFileTypeFile,
   resizeFileTypeBase64,
-} from "../../utils/resizefile";
+} from "../../utils/resizeFile";
 
 import {
   getStorage,
@@ -77,17 +77,11 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
 
   const createPost = async () => {
     try {
-      const createPost = await axios.post(
-        `${apiUrl}/posts`,
-        {
-          userId: currentUser._id,
-          description,
-          photos: [imageUrl],
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const createPost = await axios.post(`${apiUrl}/posts`, {
+        userId: currentUser._id,
+        description,
+        photos: [imageUrl],
+      });
       setImg(null);
       setSuccess(true);
       window.location.reload(false);
@@ -107,16 +101,15 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
             <CloseIcon />
           </button>
         </span>
-        <motion.div className="max-w-[734px] h-[390px] max-h-[437px] bg-primaryBg rounded-xl overflow-hidden">
+        <motion.div
+          animate={{ width: change ? 720 : 360 }}
+          transition={{ duration: 0.3 }}
+          className="h-[390px] max-h-[437px] bg-primaryBg rounded-xl overflow-hidden"
+        >
           <div className="flex flex-col">
             <div className="h-11 flex items-center justify-center border-b-[1px] border-separator">
               {img ? (
-                <motion.div
-                  initial={{ width: 360 }}
-                  animate={{ width: change ? 720 : 360 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center justify-between"
-                >
+                <div className="w-full flex items-center justify-between">
                   <div className="ml-2">
                     <button
                       onClick={() => {
@@ -151,7 +144,7 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
                       </button>
                     )}
                   </div>
-                </motion.div>
+                </div>
               ) : (
                 <div className="w-[360px] flex items-center justify-center">
                   <h1 className="text-primaryText text-base font-medium">
@@ -169,35 +162,40 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
                     alt=""
                   />
                 </div>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: change ? 360 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="w-full flex flex-col">
-                    <div className="mx-4 mt-[18px] mb-[14px]">
-                      <div className="flex items-center">
-                        <span className="mr-3 w-7 h-7">
-                          <img
-                            src={currentUser?.profilePicture}
-                            className="w-full h-full object-cover object-center rounded-full"
-                            alt=""
-                          />
-                        </span>
-                        <span className="text-primaryText font-semibold text-sm">
-                          {currentUser?.username}
-                        </span>
+                <AnimatePresence>
+                  {change && (
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: 360 }}
+                      exit={{ width: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="w-full flex flex-col">
+                        <div className="mx-4 mt-[18px] mb-[14px]">
+                          <div className="flex items-center">
+                            <span className="mr-3 w-7 h-7">
+                              <img
+                                src={currentUser?.profilePicture}
+                                className="w-full h-full object-cover object-center rounded-full"
+                                alt=""
+                              />
+                            </span>
+                            <span className="text-primaryText font-semibold text-sm">
+                              {currentUser?.username}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mt-[18px]">
+                          <textarea
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="w-full min-h-[168px] px-4 resize-none outline-none text-sm text-primaryText placeholder:text-sm placeholder:text-secondaryText"
+                            placeholder="Viết chú thích..."
+                          ></textarea>
+                        </div>
                       </div>
-                    </div>
-                    <div className="mt-[18px]">
-                      <textarea
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="w-full min-h-[168px] px-4 resize-none outline-none text-sm text-primaryText placeholder:text-sm placeholder:text-secondaryText"
-                        placeholder="Viết chú thích..."
-                      ></textarea>
-                    </div>
-                  </div>
-                </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : success ? (
               <div className="w-full h-[346px] flex flex-col items-center justify-center">

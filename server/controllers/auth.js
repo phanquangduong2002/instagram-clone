@@ -24,21 +24,16 @@ export const signup = async (req, res, next) => {
 
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT);
+    const accessToken = jwt.sign({ id: newUser._id }, process.env.JWT);
 
     const { password, ...othersData } = newUser._doc;
 
-    res
-      .cookie("accesss_token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 365 * 24 * 3600000),
-      })
-      .status(200)
-      .json({
-        success: true,
-        message: "User create successfully",
-        user: othersData,
-      });
+    res.status(200).json({
+      success: true,
+      message: "User create successfully",
+      user: othersData,
+      accessToken: accessToken,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -71,21 +66,16 @@ export const signin = async (req, res, next) => {
         .status(400)
         .json({ success: false, message: "Incorrect username or password" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT);
+    const accessToken = jwt.sign({ id: user._id }, process.env.JWT);
 
     const { password, ...othersData } = user._doc;
 
-    res
-      .status(200)
-      .cookie("access_token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 365 * 24 * 3600000),
-      })
-      .json({
-        success: true,
-        message: "User logged in successfully",
-        user: othersData,
-      });
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      user: othersData,
+      accessToken: accessToken,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });

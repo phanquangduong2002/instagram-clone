@@ -48,13 +48,9 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
   const handleLike = async (e) => {
     e.preventDefault();
     try {
-      const like = await axios.put(
-        `${apiUrl}/posts/${currentPost._id}/like`,
-        {
-          id: currentUser._id,
-        },
-        { withCredentials: true }
-      );
+      const like = await axios.put(`${apiUrl}/posts/${currentPost._id}/like`, {
+        id: currentUser._id,
+      });
       if (location.includes("profile")) {
         const userProfile = await axios.get(`${apiUrl}/user/get/${username}`);
 
@@ -90,8 +86,7 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
         {
           body: commentValue,
           userId: currentUser._id,
-        },
-        { withCredentials: true }
+        }
       );
       setCommentValue("");
       if (location.includes("profile")) {
