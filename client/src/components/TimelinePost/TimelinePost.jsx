@@ -7,16 +7,14 @@ import { apiUrl } from "../../api/constants";
 
 import Post from "../Post/Post";
 import PostModal from "../PostModal/PostModal";
+import CreatePostModal from "../CreatePostModal/CreatePostModal";
 
 const TimelinePost = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const { isShowCreatePostModal } = useSelector((state) => state.post);
 
   const [timeLinePosts, setTimeLinePosts] = useState(null);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
-
-  isShowPostModal
-    ? (document.body.style.overflow = "hidden")
-    : (document.body.style.overflow = "visible");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +54,9 @@ const TimelinePost = () => {
             setPosts={setTimeLinePosts}
             setIsShowPostModal={setIsShowPostModal}
           />
+        )}
+        {isShowCreatePostModal && (
+          <CreatePostModal setPosts={setTimeLinePosts} />
         )}
       </AnimatePresence>
     </div>

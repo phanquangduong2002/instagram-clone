@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentPost: null,
+  isShowCreatePostModal: false,
 };
 
 export const postSlice = createSlice({
@@ -11,9 +12,12 @@ export const postSlice = createSlice({
     findPost: (state, action) => {
       state.currentPost = action.payload;
     },
+    setShowCreatePostModal: (state, action) => {
+      state.isShowCreatePostModal = action.payload;
+    },
   },
 });
 
-export const { findPost } = postSlice.actions;
+export const { findPost, setShowCreatePostModal } = postSlice.actions;
 
 export default postSlice.reducer;

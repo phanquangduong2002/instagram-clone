@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { AnimatePresence, motion } from "framer-motion";
 
-import CreatePostModal from "../CreatePostModal/CreatePostModal";
 import useDebounce from "../../hooks/useDebounce";
+
+import { setShowCreatePostModal } from "../../redux/postSlice";
 
 import {
   InstagramText,
@@ -30,13 +31,13 @@ const Navbar = () => {
   const [openSetting, setOpenSetting] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isShowCreatePostModal, setIsShowCreatePostModal] = useState(false);
   const [valueInput, setValueInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
   const { currentUser } = useSelector((state) => state.user);
 
   const location = useLocation().pathname;
+  const dispatch = useDispatch();
 
   const debounced = useDebounce(valueInput, 500);
 
@@ -238,7 +239,7 @@ const Navbar = () => {
               </motion.div>
             </button>
             <button
-              onClick={() => setIsShowCreatePostModal(true)}
+              onClick={() => dispatch(setShowCreatePostModal(true))}
               className="w-full"
             >
               <motion.div
@@ -491,13 +492,6 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-      <AnimatePresence>
-        {isShowCreatePostModal && (
-          <CreatePostModal
-            setIsShowCreatePostModal={setIsShowCreatePostModal}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 };

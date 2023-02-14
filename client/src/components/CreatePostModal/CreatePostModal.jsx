@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { setShowCreatePostModal } from "../../redux/postSlice";
+
 import { useLocation } from "react-router-dom";
 
 import axios from "axios";
@@ -23,9 +25,8 @@ import {
 } from "firebase/storage";
 
 import app from "../../firebase";
-import { async } from "@firebase/util";
 
-const CreatePostModal = ({ setIsShowCreatePostModal }) => {
+const CreatePostModal = ({ setPosts }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const [file, setFile] = useState(null);
@@ -37,8 +38,9 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
   const [success, setSuccess] = useState(false);
 
   const location = useLocation().pathname;
+  const dispatch = useDispatch();
 
-  const uploadImg = (file) => {
+  const uploadImg = async (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
@@ -82,9 +84,21 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
         description,
         photos: [imageUrl],
       });
+      setChange(false);
       setImg(null);
       setSuccess(true);
-      window.location.reload(false);
+
+      if (location.includes("profile")) {
+        const postsData = await axios.get(
+          `${apiUrl}/posts/user/${currentUser._id}`
+        );
+        setPosts(postsData.data.posts);
+      } else {
+        const postsData = await axios.get(
+          `${apiUrl}/posts/timeline/${currentUser._id}`
+        );
+        setPosts(postsData.data.posts);
+      }
     } catch (error) {
       console.log(error.response?.data);
     }
@@ -95,7 +109,7 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
       <div className="w-full h-full flex items-center justify-center relative">
         <span className="absolute top-3 right-3 z-[1001]">
           <button
-            onClick={() => setIsShowCreatePostModal(false)}
+            onClick={() => dispatch(setShowCreatePostModal(false))}
             className="p-2"
           >
             <CloseIcon />
@@ -128,8 +142,8 @@ const CreatePostModal = ({ setIsShowCreatePostModal }) => {
                     {!change ? (
                       <button
                         onClick={async () => {
-                          setChange(true);
                           await uploadImg(file);
+                          setChange(true);
                         }}
                         className="py-2 px-4 text-primaryButton text-sm font-medium hover:text-linkText"
                       >

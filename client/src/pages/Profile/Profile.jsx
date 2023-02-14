@@ -32,10 +32,10 @@ import SavedPosts from "../../components/SavedPosts/SavedPosts";
 import UserInteractionModal from "../../components/UserInteractionModal/UserInteractionModal";
 import ChangeAvatarModal from "../../components/ChangeAvatarModal/ChangeAvatarModal";
 import PostModal from "../../components/PostModal/PostModal";
-import CreatePostModal from "../../components/CreatePostModal/CreatePostModal";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const { isShowCreatePostModal } = useSelector((state) => state.post);
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState(null);
@@ -46,7 +46,6 @@ const Profile = () => {
     useState(false);
   const [isShowChangeAvatarModal, setIsShowChangeAavarModal] = useState(false);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
-  const [isShowCreatePostModal, setIsShowCreatePostModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -350,7 +349,6 @@ const Profile = () => {
                     user={user}
                     posts={posts}
                     setIsShowPostModal={setIsShowPostModal}
-                    setIsShowCreatePostModal={setIsShowCreatePostModal}
                     setPosts={setPosts}
                   />
                 )}
@@ -500,13 +498,6 @@ const Profile = () => {
               user={user}
               setUser={setUser}
               setIsShowChangeAavarModal={setIsShowChangeAavarModal}
-            />
-          )}
-          {isShowCreatePostModal && (
-            <CreatePostModal
-              user={user}
-              setPosts={setPosts}
-              setIsShowCreatePostModal={setIsShowCreatePostModal}
             />
           )}
         </>
