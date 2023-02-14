@@ -12,7 +12,7 @@ Các tính năng hiện tại của trang web
 - Delete post
 - Like / Dislike post
 - Comment post
-- Search acccount user
+- Search user account
 - Log out
 
 Những công nghệ được sử dụng
