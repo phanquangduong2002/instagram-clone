@@ -166,32 +166,34 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
 
             {/* 2 */}
             <div className="p-4 flex-1 overflow-y-auto">
-              <div className="pt-[5px] pr-4 pb-4">
-                <div className="w-full flex items-start">
-                  <div className="w-8 h-8 mr-[14px]">
-                    <Link
-                      to={`/profile/${currentPost?.userId?.username}`}
-                      className="w-full h-full"
-                    >
-                      <img
-                        src={currentPost?.userId?.profilePicture}
-                        className="w-full h-full object-cover object-center rounded-full"
-                        alt=""
-                      />
-                    </Link>
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="text-primaryText text-[13px] hover:opacity-[0.5] font-semibold">
-                      <Link to={`/profile/${currentPost?.userId?.username}`}>
-                        {currentPost?.userId?.username}
+              {currentPost.description && (
+                <div className="pt-[5px] pr-4 pb-4">
+                  <div className="w-full flex items-start">
+                    <div className="w-8 h-8 mr-[14px]">
+                      <Link
+                        to={`/profile/${currentPost?.userId?.username}`}
+                        className="w-full h-full"
+                      >
+                        <img
+                          src={currentPost?.userId?.profilePicture}
+                          className="w-full h-full object-cover object-center rounded-full"
+                          alt=""
+                        />
                       </Link>
-                    </h2>
-                    <p className="text-sm text-primaryText font-normal pt-1">
-                      {currentPost?.description}
-                    </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <h2 className="text-primaryText text-[13px] hover:opacity-[0.5] font-semibold">
+                        <Link to={`/profile/${currentPost?.userId?.username}`}>
+                          {currentPost?.userId?.username}
+                        </Link>
+                      </h2>
+                      <p className="text-sm text-primaryText font-normal pt-1">
+                        {currentPost?.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {currentPost.comments &&
                 currentPost.comments.map((comment) => (
@@ -233,6 +235,9 @@ const PostModal = ({ setPosts, setIsShowPostModal }) => {
                               <span className="mr-[12px] text-xs text-secondaryText font-normal">
                                 {formatDate(comment.date)}
                               </span>
+                              <button className="opacity-[0.5]">
+                                <OptionIcon />
+                              </button>
                             </div>
                           </div>
                         </div>

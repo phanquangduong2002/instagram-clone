@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import { AnimatePresence } from "framer-motion";
@@ -32,6 +38,7 @@ import SavedPosts from "../../components/SavedPosts/SavedPosts";
 import UserInteractionModal from "../../components/UserInteractionModal/UserInteractionModal";
 import ChangeAvatarModal from "../../components/ChangeAvatarModal/ChangeAvatarModal";
 import PostModal from "../../components/PostModal/PostModal";
+import OptionsUserModal from "../../components/OptionsUserModal/OptionsUserModal";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -46,17 +53,20 @@ const Profile = () => {
     useState(false);
   const [isShowChangeAvatarModal, setIsShowChangeAavarModal] = useState(false);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
+  const [isShowOptionsUserModal, setIsShowOptionsUserModal] = useState(false);
 
   const dispatch = useDispatch();
 
   const location = useLocation().pathname;
 
   const { username } = useParams();
+  const navigate = useNavigate();
 
   isShowUserInteractionModal ||
   isShowPostModal ||
   isShowChangeAvatarModal ||
-  isShowCreatePostModal
+  isShowCreatePostModal ||
+  isShowOptionsUserModal
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "visible");
 
@@ -79,6 +89,10 @@ const Profile = () => {
       console.log(error.response?.data);
     }
   };
+
+  useEffect(() => {
+    if (!currentUser) navigate("/accounts/login");
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,7 +163,10 @@ const Profile = () => {
                           </Link>
                         </div>
                         <div className="ml-[5px]">
-                          <button className="p-2">
+                          <button
+                            onClick={() => setIsShowOptionsUserModal(true)}
+                            className="p-2"
+                          >
                             <OptionProfileIcon />
                           </button>
                         </div>
@@ -498,6 +515,11 @@ const Profile = () => {
               user={user}
               setUser={setUser}
               setIsShowChangeAavarModal={setIsShowChangeAavarModal}
+            />
+          )}
+          {isShowOptionsUserModal && (
+            <OptionsUserModal
+              setIsShowOptionsUserModal={setIsShowOptionsUserModal}
             />
           )}
         </>
