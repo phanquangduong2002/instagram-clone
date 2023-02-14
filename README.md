@@ -2,15 +2,18 @@
 
 Backend(Node + Express + Mongodb) Frontend(React + Tailwindcss)
 
-No responsive
+Responsive on PC only
 
 Các tính năng hiện tại của trang web
 - Sign up / Sign in
 - Change Avatar
 - Follow / Unfollow
-- Create Post
+- Create post
+- Delete post
 - Like / Dislike post
 - Comment post
+- Search acccount user
+- Log out
 
 Những công nghệ được sử dụng
 - Create react app
