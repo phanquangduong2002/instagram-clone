@@ -13,9 +13,9 @@ import { CloseIcon, FileIcon, BackIcon } from "../../assets/icons";
 import SuccessIcon from "../../assets/images/success.gif";
 
 import {
-  resizeFileTypeFile,
   resizeFileTypeBase64,
-} from "../../utils/resizeFile";
+  resizeFileTypeFile,
+} from "../../utils/resizefile";
 
 import {
   getStorage,
