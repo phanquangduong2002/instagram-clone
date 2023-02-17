@@ -25,4 +25,4 @@ Những công nghệ được sử dụng
 - Jsonwebtoken
 - Mongoose
 
-Visit website: https://instagram-clone-nu-ten.vercel.app
+Visit website: https://instagram-clone-app-weld.vercel.app/
