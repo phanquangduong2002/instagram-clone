@@ -6,10 +6,7 @@ export const getUser = async (req, res, next) => {
       .populate("followers", ["-password"])
       .populate("following", ["-password"]);
 
-    if (!user)
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+    if (!user) return res.status(400).json({ success: false, message: "User not found" });
 
     const { password, ...othersData } = user._doc;
     res.status(200).json({
@@ -18,7 +15,7 @@ export const getUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.json(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 export const findUser = async (req, res, next) => {
@@ -27,10 +24,7 @@ export const findUser = async (req, res, next) => {
       .populate("followers", ["-password"])
       .populate("following", ["-password"]);
 
-    if (!user)
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+    if (!user) return res.status(400).json({ success: false, message: "User not found" });
 
     const { password, ...othersData } = user._doc;
     res.status(200).json({
@@ -39,7 +33,7 @@ export const findUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.json(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -54,10 +48,7 @@ export const searchUser = async (req, res, next) => {
       .select("-password")
       .populate("followers", ["-password"])
       .populate("following", ["-password"]);
-    if (!users)
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+    if (!users) return res.status(400).json({ success: false, message: "User not found" });
 
     return res.status(200).json({
       success: true,
@@ -65,7 +56,7 @@ export const searchUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.json(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
