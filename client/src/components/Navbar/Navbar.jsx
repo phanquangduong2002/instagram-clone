@@ -59,7 +59,7 @@ const Navbar = () => {
       setLoading(true);
 
       const result = await axios.get(
-        `${apiUrl}/user/search?q=${encodeURIComponent(valueInput)}`
+        `${apiUrl}/user/search?q=${encodeURIComponent(debounced.trim())}`
       );
 
       console.log(result.data.users);
