@@ -348,8 +348,7 @@ const Navbar = () => {
                       type="text"
                       value={valueInput}
                       onChange={(e) => {
-                        if (e.target.value.startsWith(" ")) return;
-                        else setValueInput(e.target.value);
+                        setValueInput(e.target.value);
                       }}
                       placeholder="Tìm kiếm"
                       className="w-full px-4 py-2 bg-highlightBg rounded-lg outline-none text-primaryText tex-sm font-normal placeholder:text-secondaryText placeholder:font-light placeholder:text-sm"
